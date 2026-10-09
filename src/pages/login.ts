@@ -1,4 +1,5 @@
 import { renderHeader } from "../components/header";
+import { renderFooter } from "../components/footer";
 
-// render header for the login page
 renderHeader();
+renderFooter();
