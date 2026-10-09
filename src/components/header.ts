@@ -4,11 +4,13 @@ export function renderHeader() {
   if (!header) return;
 
   header.innerHTML = `
-  <a href="/">Atrium Auctionarium</a>
-  <nav aria-label="Main">
-    <a href="/listings.html">Listings</a>
-    <a href="/login.html">Log in</a>
-    <a href="/register.html">Register</a>
+  <div class="flex items-center justify-between px-6 py-4 border-b border-[#D4AF37]">
+  <a href="/" class="text-xl tracking-widest text-[#D4AF37]">Atrium Auctionarium</a>
+ <nav aria-label="Main" class="flex gap-6">
+    <a href="/listings.html" class="hover:underline focus-visible:outline-2 focus-visible:outline-[#D4AF37]">Listings</a>
+    <a href="/login.html" class="hover:underline focus-visible:outline-2 focus-visible:outline-[#D4AF37]">Log in</a>
+    <a href="/register.html" class="hover:underline focus-visible:outline-2 focus-visible:outline-[#D4AF37]">Register</a>
   </nav>
+</div>
 `;
 }
