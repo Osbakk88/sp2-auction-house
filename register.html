@@ -8,10 +8,6 @@
       href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&family=Syne:wght@400..800&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="/src/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register | Atrium Auctionarium</title>
@@ -21,6 +17,43 @@
     <header id="site-header"></header>
     <main id="main" class="flex-1 px-6 py-8">
       <h1 class="text-3xl text-[#F4D18B]">Register</h1>
+      <form id="register-form" class="mt-6 flex max-w-md flex-col gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="rounded border border-[#F4D18B] bg-[#0B0B0C] px-3 py-2 text-white hover"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="rounded border border-[#F4D18B] bg-[#0B0B0C] px-3 py-2 text-white"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="rounded border border-[#F4D18B] bg-[#0B0B0C] px-3 py-2 text-white"
+          />
+        </div>
+
+        <p id="form-message" role="alert" class="min-h-6"></p>
+        <button
+          type="submit"
+          class="mt-4 rounded bg-[#D4AF37] px-4 py-2 text-black hover:bg-[#F4D18B] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          Register
+        </button>
+      </form>
     </main>
     <footer id="site-footer"></footer>
     <script type="module" src="/src/pages/register.ts"></script>
