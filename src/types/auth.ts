@@ -16,3 +16,9 @@ export interface LoginResponse {
     accessToken: string;
   };
 }
+
+export interface ApiKeyResponse {
+  data: {
+    key: string;
+  };
+}

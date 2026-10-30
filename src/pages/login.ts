@@ -1,8 +1,8 @@
 import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
 import type { LoginRequest } from "../types/auth";
-import { loginUser } from "../services/auth";
-import { saveName, saveToken } from "../utils/storage";
+import { createApiKey, loginUser } from "../services/auth";
+import { getApiKey, saveApiKey, saveName, saveToken } from "../utils/storage";
 
 renderHeader();
 renderFooter();
@@ -24,6 +24,10 @@ if (form && message) {
       const result = await loginUser(body);
       saveToken(result.data.accessToken);
       saveName(result.data.name);
+      if (!getApiKey()) {
+        const keyResult = await createApiKey(result.data.accessToken);
+        saveApiKey(keyResult.data.key);
+      }
       message.textContent = "Log in successful.";
       message.className = "min-h-6 text-green-400";
       form.reset();
