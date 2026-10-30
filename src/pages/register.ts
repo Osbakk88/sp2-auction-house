@@ -23,12 +23,20 @@ if (form && message) {
     try {
       await registerUser(body);
       message.textContent = "Registration successful.";
+      message.className = "min-h-6 text-green-400";
       form.reset();
+
+      setTimeout(() => {
+        window.location.href = "/login.html";
+      }, 1500);
     } catch (error) {
-      message.textContent =
+      const text =
         error instanceof Error
           ? error.message
           : "Registration failed. Please try again.";
+
+      message.textContent = `Error: ${text}`;
+      message.className = "min-h-6 text-red-400";
     }
   });
 }
