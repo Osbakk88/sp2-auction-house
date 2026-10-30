@@ -2,7 +2,7 @@ import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
 import type { LoginRequest } from "../types/auth";
 import { loginUser } from "../services/auth";
-import { saveToken } from "../utils/storage";
+import { saveName, saveToken } from "../utils/storage";
 
 renderHeader();
 renderFooter();
@@ -23,6 +23,7 @@ if (form && message) {
     try {
       const result = await loginUser(body);
       saveToken(result.data.accessToken);
+      saveName(result.data.name);
       message.textContent = "Log in successful.";
       message.className = "min-h-6 text-green-400";
       form.reset();
