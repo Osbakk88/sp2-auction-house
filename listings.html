@@ -8,10 +8,6 @@
       href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&family=Syne:wght@400..800&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="/src/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Listings | Atrium Auctionarium</title>
@@ -21,6 +17,11 @@
     <header id="site-header"></header>
     <main id="main" class="flex-1 px-6 py-8">
       <h1 class="text-3xl text-[#F4D18B]">Listings</h1>
+      <p id="listings-status" role="status" class="min-h-6"></p>
+      <ul
+        id="listings"
+        class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      ></ul>
     </main>
     <footer id="site-footer"></footer>
     <script type="module" src="/src/pages/listings.ts"></script>
