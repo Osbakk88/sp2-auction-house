@@ -13,7 +13,13 @@ async function loadListings() {
   status.textContent = "Loading listings...";
   try {
     const result = await getListings(1);
-    console.log(result);
+
+    for (const listing of result.data) {
+      const li = document.createElement("li");
+      li.textContent = listing.title;
+      list.appendChild(li);
+    }
+
     status.textContent = "";
   } catch (error) {
     status.textContent =
