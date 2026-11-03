@@ -1,3 +1,5 @@
+import { clearAuth, getToken } from "../utils/storage";
+
 export function renderHeader() {
   const header = document.querySelector("#site-header");
 
@@ -5,6 +7,14 @@ export function renderHeader() {
 
   const linkClass =
     "hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F4D18B]";
+
+  const isLoggedIn = Boolean(getToken());
+
+  const authLinks = isLoggedIn
+    ? `<a href="/profile.html" class="${linkClass}">Profile</a>
+     <button id="logout-button" type="button" class="${linkClass}">Log out</button>`
+    : `<a href="/login.html" class="${linkClass}">Log in</a>
+     <a href="/register.html" class="border border-[#D4AF37] px-4 py-1 hover:bg-[#D4AF37] hover:text-black ${linkClass}">Register</a>`;
 
   header.innerHTML = `
     <div class="relative flex flex-col gap-6 px-6 pt-10 pb-6 border-b border-[#F4D18B] md:gap-10 md:px-24">
@@ -32,12 +42,17 @@ export function renderHeader() {
         aria-label="Main"
         class="hidden flex-col items-start gap-4 font-body text-xl tracking-[0.02em] text-white md:flex md:flex-row md:items-center md:justify-center md:gap-10 md:text-2xl"
       >
-        <a href="/listings.html" class="${linkClass}">Listings</a>
-        <a href="/login.html" class="${linkClass}">Log in</a>
-        <a href="/register.html" class="border border-[#D4AF37] px-4 py-1 hover:bg-[#D4AF37] hover:text-black ${linkClass}">Register</a>
+        <a href="/listings.html" class="${linkClass}">Listings</a>${authLinks}
       </nav>
     </div>
   `;
+
+  const logoutButton = header.querySelector("#logout-button");
+
+  logoutButton?.addEventListener("click", () => {
+    clearAuth();
+    window.location.href = "/index.html";
+  });
 
   const toggle = header.querySelector<HTMLButtonElement>("#menu-toggle");
   const nav = header.querySelector<HTMLElement>("#main-nav");

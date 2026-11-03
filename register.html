@@ -24,7 +24,9 @@
             type="text"
             id="name"
             name="name"
-            class="rounded border border-[#F4D18B] bg-[#0B0B0C] px-3 py-2 text-white hover"
+            required
+            autocomplete="username"
+            class="rounded border border-[#F4D18B] bg-[#0B0B0C] px-3 py-2 text-white"
           />
         </div>
         <div class="flex flex-col gap-1">
@@ -33,6 +35,8 @@
             type="email"
             id="email"
             name="email"
+            required
+            autocomplete="email"
             class="rounded border border-[#F4D18B] bg-[#0B0B0C] px-3 py-2 text-white"
           />
         </div>
@@ -42,6 +46,9 @@
             type="password"
             id="password"
             name="password"
+            required
+            minlength="8"
+            autocomplete="new-password"
             class="rounded border border-[#F4D18B] bg-[#0B0B0C] px-3 py-2 text-white"
           />
         </div>
