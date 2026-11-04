@@ -32,6 +32,25 @@ This log documents all AI assistance I have sought while working on this assignm
 **Purpose:** Planning and structuring the seven HTML pages (index, listings, listing, login, register, profile, create-listing), an accessibility checklist per page, and setting up Vite's multi-page build.
 **Outcome:** Wrote the HTML skeletons myself with lang, viewport, unique titles, one h1, a skip link, header/main/footer landmarks and my own script file per page. Added all pages to build.rollupOptions.input in vite.config.ts and confirmed with "npm run build" that all seven pages end up in dist/.
 
+**Tool used:** Claude
+**Date:** 9 October 2026 and 30 October - 3 November 2026
+**Purpose:** Building a responsive header and footer (header.ts, footer.ts). With a hamburger menu, skip link, landmarks and keyboard support (aria-expanded, aria-controls, Escape to close). Improvements: making the header change depending on whether the user is logged in, and adding logout.
+**Outcome:** I wrote the code with Claude's guidance/code checking and fixed mistakes along the way that I had made (mixed-up versions of the file, a variable used before it was defined, a listener attached before the HTML existed, an unsaved file, a duplicated nav). I can explain what the header does and why each accessibility attribute is there.
+
+**Tool used:** Claude
+**Date:** 3 November 2026
+**Purpose:** Asked why Chrome showed the validation message for the 8-character password in Norwegian although my page is in English.
+**Outcome:** Learned that built-in browser validation follows the browser's language, not the page's. Decided to keep native validation for now and wrote the reasoning in my reflection notes.
+
+**Tool used:** Claude  
+**Date:** 3 November 2026
+**Purpose:** Building the listings page: TypeScript types for listings (src/types/listing.ts), a service that fetches listings (getListings) from the Noroff API, and the page script that shows the listings as cards with image, title, number of bids, end date and a link. Also a local placeholder.svg and an onerror handler for listings with missing or broken images, and making the whole card clickable.
+**Outcome:** Asked Claude for help to understand the steps (of loop, createElement, textContent instead of innerHTML because the data is written by other students, URLSearchParams, optional/null values) and showed me an example code for the steps. I typed it, ran npx tsc --noEmit, tested in the browser and debugged. I mixed up listing.ts/listings.ts and listing.html/listings.html several times, which cost me a lot of time. The final structure should now be correct.
+
+**Tool used:** Claude
+**Date:** 3 November 2026
+**Purpose:** Building the single listing page (listing.html, src/pages/listing.ts, getListing in the service, and the SingleListing/Bid types). Reading ?id= from the URL, showing image, description (handling null), seller, end date and a bid history sorted with the highest bid first. Centerd the layout after. **Outcome:** Asked claude for guidance and explanation, wrote the code myself. Tested with a listing without bids ("chair") and one with 7 bids, and committed. Can explain how the id is read from the URL and how the bid list is built and sorted.
+
 **Notes on AI use overall**
 
 I used AI mainly to understand the assignment and API requirements, to plan my project structure, and to work through debugging when I got stuck. Not to generate finished features. Giving Claude the assignment's AI Policy up front meant it flagged when something (like writing core auth/API logic outright) would be outside scope. All code in the project's TypeScript and CSS files is written and applied by me.
