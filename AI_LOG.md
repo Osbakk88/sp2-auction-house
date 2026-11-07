@@ -33,7 +33,7 @@ This log documents all AI assistance I have sought while working on this assignm
 **Outcome:** Wrote the HTML skeletons myself with lang, viewport, unique titles, one h1, a skip link, header/main/footer landmarks and my own script file per page. Added all pages to build.rollupOptions.input in vite.config.ts and confirmed with "npm run build" that all seven pages end up in dist/.
 
 **Tool used:** Claude
-**Date:** 9 October 2026 and 30 October - 3 November 2026
+**Date:** 9 October 2026, 30 October and 3 November 2026
 **Purpose:** Building a responsive header and footer (header.ts, footer.ts). With a hamburger menu, skip link, landmarks and keyboard support (aria-expanded, aria-controls, Escape to close). Improvements: making the header change depending on whether the user is logged in, and adding logout.
 **Outcome:** I wrote the code with Claude's guidance/code checking and fixed mistakes along the way that I had made (mixed-up versions of the file, a variable used before it was defined, a listener attached before the HTML existed, an unsaved file, a duplicated nav). I can explain what the header does and why each accessibility attribute is there.
 
