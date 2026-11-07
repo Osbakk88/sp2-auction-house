@@ -2,7 +2,10 @@ import type { ListingsResponse, SingleListingResponse } from "../types/listing";
 
 const BASE_URL = "https://v2.api.noroff.dev/auction/listings";
 
-export async function getListings(page = 1): Promise<ListingsResponse> {
+export async function getListings(
+  page = 1,
+  query = "",
+): Promise<ListingsResponse> {
   const params = new URLSearchParams({
     limit: "12",
     page: String(page),
@@ -10,7 +13,10 @@ export async function getListings(page = 1): Promise<ListingsResponse> {
     sortOrder: "desc",
     _active: "true",
   });
-  const response = await fetch(`${BASE_URL}?${params}`);
+  if (query) params.set("q", query);
+
+  const endpoint = query ? `${BASE_URL}/search` : BASE_URL;
+  const response = await fetch(`${endpoint}?${params}`);
   const result = await response.json();
   if (!response.ok) {
     const message = result.errors?.[0]?.message ?? "An unknown error occurred";
