@@ -1,4 +1,5 @@
-import { clearAuth, getToken } from "../utils/storage";
+import { clearAuth, getName, getToken } from "../utils/storage";
+import { getProfile } from "../services/profile";
 
 export function renderHeader() {
   const header = document.querySelector("#site-header");
@@ -11,7 +12,8 @@ export function renderHeader() {
   const isLoggedIn = Boolean(getToken());
 
   const authLinks = isLoggedIn
-    ? `<a href="/profile.html" class="${linkClass}">Profile</a>
+    ? `<span id="header-credits" class="text-[#F4D18B]"></span>
+     <a href="/profile.html" class="${linkClass}">Profile</a>
      <button id="logout-button" type="button" class="${linkClass}">Log out</button>`
     : `<a href="/login.html" class="${linkClass}">Log in</a>
      <a href="/register.html" class="border border-[#D4AF37] px-4 py-1 hover:bg-[#D4AF37] hover:text-black ${linkClass}">Register</a>`;
@@ -53,6 +55,19 @@ export function renderHeader() {
     clearAuth();
     window.location.href = "/index.html";
   });
+
+  const creditsEl = header.querySelector<HTMLElement>("#header-credits");
+  const userName = getName();
+
+  if (creditsEl && userName) {
+    getProfile(userName)
+      .then((result) => {
+        creditsEl.textContent = `Credits: ${result.data.credits}`;
+      })
+      .catch(() => {
+        creditsEl.textContent = "";
+      });
+  }
 
   const toggle = header.querySelector<HTMLButtonElement>("#menu-toggle");
   const nav = header.querySelector<HTMLElement>("#main-nav");
