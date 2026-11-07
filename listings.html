@@ -22,6 +22,26 @@
         id="listings"
         class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
       ></ul>
+      <nav
+        aria-label="Listings pages"
+        class="mt-8 flex items-center justify-center gap-4"
+      >
+        <button
+          id="prev-page"
+          type="button"
+          class="border border-[#D4AF37] px-4 py-2 focus-visible:outline-2 focus-visible:outline-[#D4AF37] disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Previous
+        </button>
+        <p id="page-info" aria-live="polite"></p>
+        <button
+          id="next-page"
+          type="button"
+          class="border border-[#D4AF37] px-4 py-2 focus-visible:outline-2 focus-visible:outline-[#D4AF37] disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Next
+        </button>
+      </nav>
     </main>
     <footer id="site-footer"></footer>
     <script type="module" src="/src/pages/listings.ts"></script>

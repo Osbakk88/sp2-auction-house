@@ -7,12 +7,19 @@ renderFooter();
 
 const status = document.querySelector<HTMLParagraphElement>("#listings-status");
 const list = document.querySelector<HTMLUListElement>("#listings");
+const prevButton = document.querySelector<HTMLButtonElement>("#prev-page");
+const nextButton = document.querySelector<HTMLButtonElement>("#next-page");
+const pageInfo = document.querySelector<HTMLParagraphElement>("#page-info");
 
-async function loadListings() {
-  if (!status || !list) return;
+let currentPage = 1;
+
+async function loadListings(page: number) {
+  if (!status || !list || !prevButton || !nextButton || !pageInfo) return;
   status.textContent = "Loading listings...";
   try {
-    const result = await getListings(1);
+    const result = await getListings(page);
+    currentPage = result.meta.currentPage;
+    list.replaceChildren();
 
     for (const listing of result.data) {
       const li = document.createElement("li");
@@ -60,6 +67,9 @@ async function loadListings() {
       list.appendChild(li);
     }
 
+    pageInfo.textContent = `Page ${result.meta.currentPage} of ${result.meta.pageCount}`;
+    prevButton.disabled = result.meta.isFirstPage;
+    nextButton.disabled = result.meta.isLastPage;
     status.textContent = "";
   } catch (error) {
     status.textContent =
@@ -67,4 +77,12 @@ async function loadListings() {
   }
 }
 
-loadListings();
+prevButton?.addEventListener("click", () => {
+  loadListings(currentPage - 1);
+});
+
+nextButton?.addEventListener("click", () => {
+  loadListings(currentPage + 1);
+});
+
+loadListings(1);

@@ -16,7 +16,15 @@ export interface Listing {
 
 export interface ListingsResponse {
   data: Listing[];
-  meta: { currentPage: number; isLastPage: boolean; pageCount: number };
+  meta: {
+    currentPage: number;
+    isFirstPage: boolean;
+    isLastPage: boolean;
+    previousPage: number | null;
+    nextPage: number | null;
+    pageCount: number;
+    totalCount: number;
+  };
 }
 
 export interface Seller {
