@@ -48,3 +48,15 @@ export interface SingleListing extends Listing {
 export interface SingleListingResponse {
   data: SingleListing;
 }
+
+export interface CreateListingRequest {
+  title: string;
+  description?: string;
+  tags?: string[];
+  media?: Media[];
+  endsAt: string;
+}
+
+export interface ListingResponse {
+  data: Listing;
+}
