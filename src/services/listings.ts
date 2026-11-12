@@ -97,3 +97,24 @@ export async function placeBid(
     throw new Error(message);
   }
 }
+
+export async function deleteListing(id: string): Promise<void> {
+  const token = getToken();
+  const apiKey = getApiKey();
+
+  if (!token || !apiKey) {
+    throw new Error("You must be logged in to delete a listing.");
+  }
+
+  const response = await fetch(`${BASE_URL}/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-Noroff-API-Key": apiKey,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Could not delete listing (${response.status})`);
+  }
+}

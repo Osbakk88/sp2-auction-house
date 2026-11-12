@@ -1,6 +1,6 @@
 import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
-import { getListing, placeBid } from "../services/listings";
+import { deleteListing, getListing, placeBid } from "../services/listings";
 import { getProfile } from "../services/profile";
 import { getName, getToken } from "../utils/storage";
 
@@ -172,6 +172,36 @@ async function loadListing() {
     }
 
     content.appendChild(bidSection);
+
+    if (userName && listing.seller.name === userName) {
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.textContent = "Delete listing";
+      deleteButton.className =
+        "mt-6 rounded border border-red-400 px-4 py-2 text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
+
+      deleteButton.addEventListener("click", async () => {
+        if (!window.confirm("Delete this listing? This can't be undone.")) {
+          return;
+        }
+
+        try {
+          deleteButton.disabled = true;
+          await deleteListing(id);
+          window.location.href = "/listings.html";
+        } catch (error) {
+          deleteButton.disabled = false;
+          if (status) {
+            status.textContent =
+              error instanceof Error
+                ? `Error: ${error.message}`
+                : "Could not delete listing.";
+          }
+        }
+      });
+
+      content.appendChild(deleteButton);
+    }
 
     status.textContent = "";
   } catch (error) {
