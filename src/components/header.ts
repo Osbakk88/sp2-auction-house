@@ -13,6 +13,7 @@ export function renderHeader() {
 
   const authLinks = isLoggedIn
     ? `<span id="header-credits" class="text-[#F4D18B]"></span>
+     <a href="/create-listing.html" class="${linkClass}">Create listing</a>
      <a href="/profile.html" class="${linkClass}">Profile</a>
      <button id="logout-button" type="button" class="${linkClass}">Log out</button>`
     : `<a href="/login.html" class="${linkClass}">Log in</a>
