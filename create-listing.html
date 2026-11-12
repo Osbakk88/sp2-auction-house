@@ -8,19 +8,84 @@
       href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&family=Syne:wght@400..800&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="/src/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Listing | Atrium Auctionarium</title>
+    <title>Create-Listing | Atrium Auctionarium</title>
   </head>
   <body class="min-h-screen flex flex-col bg-[#0B0B0C] text-[#F4D18B]">
     <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
     <header id="site-header"></header>
-    <main id="main" class="flex-1 px-6 py-8">
-      <h1 class="text-3xl text-[#F4D18B]">Create listing</h1>
+    <main id="main" class="mx-auto w-full max-w-2xl flex-1 px-6 py-8">
+      <h1 class="font-display text-3xl text-[#F4D18B]">Create listing</h1>
+
+      <form id="create-form" class="mt-6 flex flex-col gap-5" novalidate>
+        <div class="flex flex-col gap-1">
+          <label for="title" class="text-sm text-[#A8A296]">Title</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            required
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="description" class="text-sm text-[#A8A296]"
+            >Description (optional)</label
+          >
+          <textarea
+            id="description"
+            name="description"
+            rows="4"
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white"
+          ></textarea>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="image" class="text-sm text-[#A8A296]"
+            >Image URL (optional)</label
+          >
+          <input
+            id="image"
+            name="image"
+            type="url"
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="tags" class="text-sm text-[#A8A296]"
+            >Tags (optional, separated by commas)</label
+          >
+          <input
+            id="tags"
+            name="tags"
+            type="text"
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white"
+          />
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <label for="endsAt" class="text-sm text-[#A8A296]">Ends at</label>
+          <input
+            id="endsAt"
+            name="endsAt"
+            type="datetime-local"
+            required
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white"
+          />
+        </div>
+
+        <p id="form-status" role="alert" class="text-sm text-[#F4D18B]"></p>
+
+        <button
+          type="submit"
+          class="rounded bg-[#D4AF37] px-4 py-2 font-semibold text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]"
+        >
+          Publish listing
+        </button>
+      </form>
     </main>
     <footer id="site-footer"></footer>
     <script type="module" src="/src/pages/create-listing.ts"></script>
