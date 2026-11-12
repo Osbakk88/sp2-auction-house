@@ -3,6 +3,7 @@ import type {
   SingleListingResponse,
   CreateListingRequest,
   ListingResponse,
+  PlaceBidRequest,
 } from "../types/listing";
 import { getApiKey, getToken } from "../utils/storage";
 
@@ -67,4 +68,32 @@ export async function createListing(
     throw new Error(message);
   }
   return result;
+}
+
+export async function placeBid(
+  id: string,
+  body: PlaceBidRequest,
+): Promise<void> {
+  const token = getToken();
+  const apiKey = getApiKey();
+
+  if (!token || !apiKey) {
+    throw new Error("You must be logged in to place a bid.");
+  }
+
+  const response = await fetch(`${BASE_URL}/${id}/bids`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "X-Noroff-API-Key": apiKey,
+    },
+    body: JSON.stringify(body),
+  });
+
+  const result = await response.json();
+  if (!response.ok) {
+    const message = result.errors?.[0]?.message ?? "Could not place bid";
+    throw new Error(message);
+  }
 }

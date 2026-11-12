@@ -1,6 +1,8 @@
 import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
-import { getListing } from "../services/listings";
+import { getListing, placeBid } from "../services/listings";
+import { getProfile } from "../services/profile";
+import { getName, getToken } from "../utils/storage";
 
 renderHeader();
 renderFooter();
@@ -28,6 +30,7 @@ async function loadListing() {
     }
     document.title = `${result.data.title} | Atrium Auctionarium`;
     const listing = result.data;
+    content.replaceChildren();
 
     const firstImage = listing.media[0];
     const img = document.createElement("img");
@@ -90,6 +93,85 @@ async function loadListing() {
 
     content.appendChild(bidsHeading);
     content.appendChild(bidList);
+
+    const bidSection = document.createElement("div");
+    bidSection.className = "mt-8 max-w-2xl";
+
+    const userName = getName();
+    const ended = new Date(listing.endsAt) <= new Date();
+
+    if (ended) {
+      bidSection.textContent = "This auction has ended.";
+    } else if (!getToken() || !userName) {
+      const login = document.createElement("a");
+      login.href = "/login.html";
+      login.textContent = "Log in to place a bid.";
+      login.className = "underline";
+      bidSection.appendChild(login);
+    } else if (listing.seller.name === userName) {
+      bidSection.textContent = "You can't bid on your own listing.";
+    } else {
+      const form = document.createElement("form");
+      form.className = "flex flex-col gap-2";
+      form.noValidate = true;
+
+      const label = document.createElement("label");
+      label.htmlFor = "bid-amount";
+      label.textContent = "Your bid (credits)";
+      label.className = "text-sm text-[#A8A296]";
+
+      const input = document.createElement("input");
+      input.id = "bid-amount";
+      input.type = "number";
+      input.min = "1";
+      input.className =
+        "rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white";
+
+      const message = document.createElement("p");
+      message.setAttribute("role", "alert");
+      message.className = "text-sm";
+
+      const button = document.createElement("button");
+      button.type = "submit";
+      button.textContent = "Place bid";
+      button.className =
+        "self-start rounded bg-[#D4AF37] px-4 py-2 font-semibold text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const amount = Number(input.value);
+        const highest = Math.max(0, ...listing.bids.map((bid) => bid.amount));
+
+        if (!Number.isFinite(amount) || amount <= highest) {
+          message.textContent = `Your bid must be higher than ${highest}.`;
+          return;
+        }
+
+        try {
+          button.disabled = true;
+          message.textContent = "Placing bid...";
+          const profile = await getProfile(userName);
+          if (profile.data.credits < amount) {
+            message.textContent = `You only have ${profile.data.credits} credits.`;
+            return;
+          }
+          await placeBid(id, { amount });
+          await loadListing();
+          renderHeader();
+          if (status) status.textContent = "Your bid was placed.";
+        } catch (error) {
+          message.textContent =
+            error instanceof Error ? error.message : "Could not place bid.";
+        } finally {
+          button.disabled = false;
+        }
+      });
+
+      form.append(label, input, message, button);
+      bidSection.appendChild(form);
+    }
+
+    content.appendChild(bidSection);
 
     status.textContent = "";
   } catch (error) {

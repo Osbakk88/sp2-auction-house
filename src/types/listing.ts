@@ -60,3 +60,7 @@ export interface CreateListingRequest {
 export interface ListingResponse {
   data: Listing;
 }
+
+export interface PlaceBidRequest {
+  amount: number;
+}
