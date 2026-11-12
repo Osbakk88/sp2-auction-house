@@ -4,6 +4,7 @@ import type {
   CreateListingRequest,
   ListingResponse,
   PlaceBidRequest,
+  UpdateListingRequest,
 } from "../types/listing";
 import { getApiKey, getToken } from "../utils/storage";
 
@@ -117,4 +118,33 @@ export async function deleteListing(id: string): Promise<void> {
   if (!response.ok) {
     throw new Error(`Could not delete listing (${response.status})`);
   }
+}
+
+export async function updateListing(
+  id: string,
+  body: UpdateListingRequest,
+): Promise<ListingResponse> {
+  const token = getToken();
+  const apiKey = getApiKey();
+
+  if (!token || !apiKey) {
+    throw new Error("You must be logged in to edit a listing.");
+  }
+
+  const response = await fetch(`${BASE_URL}/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "X-Noroff-API-Key": apiKey,
+    },
+    body: JSON.stringify(body),
+  });
+
+  const result = await response.json();
+  if (!response.ok) {
+    const message = result.errors?.[0]?.message ?? "Could not update listing";
+    throw new Error(message);
+  }
+  return result;
 }

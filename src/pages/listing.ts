@@ -10,6 +10,50 @@ renderFooter();
 const status = document.querySelector<HTMLParagraphElement>("#listing-status");
 const titleEl = document.querySelector<HTMLHeadingElement>("#listing-title");
 
+function confirmDialog(
+  message: string,
+  confirmLabel: string,
+): Promise<boolean> {
+  return new Promise((resolve) => {
+    const dialog = document.createElement("dialog");
+    dialog.className =
+      "m-auto w-[90%] max-w-sm rounded-lg border border-[#D4AF37] bg-[#0B0B0C] p-6 text-[#F4D18B] backdrop:bg-black/70";
+    dialog.setAttribute("aria-labelledby", "confirm-message");
+
+    const text = document.createElement("p");
+    text.id = "confirm-message";
+    text.className = "text-lg";
+    text.textContent = message;
+
+    const actions = document.createElement("div");
+    actions.className = "mt-6 flex justify-end gap-3";
+
+    const cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.textContent = "Cancel";
+    cancel.className =
+      "rounded border border-[#A8A296] px-4 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
+
+    const confirm = document.createElement("button");
+    confirm.type = "button";
+    confirm.textContent = confirmLabel;
+    confirm.className =
+      "rounded border border-red-400 px-4 py-2 text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
+
+    cancel.addEventListener("click", () => dialog.close("cancel"));
+    confirm.addEventListener("click", () => dialog.close("confirm"));
+    dialog.addEventListener("close", () => {
+      dialog.remove();
+      resolve(dialog.returnValue === "confirm");
+    });
+
+    actions.append(cancel, confirm);
+    dialog.append(text, actions);
+    document.body.appendChild(dialog);
+    dialog.showModal();
+  });
+}
+
 async function loadListing() {
   if (!status || !titleEl) return;
 
@@ -181,9 +225,11 @@ async function loadListing() {
         "mt-6 rounded border border-red-400 px-4 py-2 text-red-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
 
       deleteButton.addEventListener("click", async () => {
-        if (!window.confirm("Delete this listing? This can't be undone.")) {
-          return;
-        }
+        const confirmed = await confirmDialog(
+          "Delete this listing? This can't be undone.",
+          "Delete",
+        );
+        if (!confirmed) return;
 
         try {
           deleteButton.disabled = true;
@@ -199,6 +245,13 @@ async function loadListing() {
           }
         }
       });
+
+      const editLink = document.createElement("a");
+      editLink.href = `/edit-listing.html?id=${id}`;
+      editLink.textContent = "Edit listing";
+      editLink.className =
+        "mt-6 mr-4 inline-block rounded border border-[#D4AF37] px-4 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
+      content.appendChild(editLink);
 
       content.appendChild(deleteButton);
     }

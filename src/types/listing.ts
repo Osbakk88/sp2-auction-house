@@ -64,3 +64,10 @@ export interface ListingResponse {
 export interface PlaceBidRequest {
   amount: number;
 }
+
+export interface UpdateListingRequest {
+  title?: string;
+  description?: string;
+  tags?: string[];
+  media?: Media[];
+}
