@@ -169,7 +169,7 @@ async function loadListing() {
       input.type = "number";
       input.min = "1";
       input.className =
-        "rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white";
+        "rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
 
       const message = document.createElement("p");
       message.setAttribute("role", "alert");

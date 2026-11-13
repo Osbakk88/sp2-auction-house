@@ -13,12 +13,13 @@ const BASE_URL = "https://v2.api.noroff.dev/auction/listings";
 export async function getListings(
   page = 1,
   query = "",
+  options: { sort?: string; sortOrder?: string; limit?: number } = {},
 ): Promise<ListingsResponse> {
   const params = new URLSearchParams({
-    limit: "12",
+    limit: String(options.limit ?? 12),
     page: String(page),
-    sort: "created",
-    sortOrder: "desc",
+    sort: options.sort ?? "created",
+    sortOrder: options.sortOrder ?? "desc",
     _active: "true",
   });
   if (query) params.set("q", query);
