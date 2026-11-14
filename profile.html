@@ -19,6 +19,21 @@
       <h1 id="profile-title" class="sr-only">Profile</h1>
       <p id="profile-status" role="status" class="min-h-6"></p>
       <div id="profile-content" class="mt-6"></div>
+
+      <section class="mt-12">
+        <h2 class="font-display text-2xl text-[#F4D18B]">My listings</h2>
+        <p id="my-listings-status" role="status" class="mt-2 min-h-6"></p>
+        <ul
+          id="my-listings"
+          class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        ></ul>
+      </section>
+
+      <section class="mt-12">
+        <h2 class="font-display text-2xl text-[#F4D18B]">My bids</h2>
+        <p id="my-bids-status" role="status" class="mt-2 min-h-6"></p>
+        <ul id="my-bids" class="mt-6 space-y-3"></ul>
+      </section>
     </main>
     <footer id="site-footer"></footer>
     <script type="module" src="/src/pages/profile.ts"></script>

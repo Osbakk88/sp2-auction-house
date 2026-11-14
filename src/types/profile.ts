@@ -1,4 +1,4 @@
-import type { Media } from "./listing";
+import type { Listing, ListingsResponse, Media } from "./listing";
 
 export interface Profile {
   name: string;
@@ -15,4 +15,16 @@ export interface Profile {
 
 export interface ProfileResponse {
   data: Profile;
+}
+
+export interface ProfileBid {
+  id: string;
+  amount: number;
+  created: string;
+  listing: Listing | null;
+}
+
+export interface ProfileBidsResponse {
+  data: ProfileBid[];
+  meta: ListingsResponse["meta"];
 }

@@ -1,6 +1,11 @@
 import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
-import { getProfile } from "../services/profile";
+import { createListingCard } from "../components/listing-card";
+import {
+  getProfile,
+  getProfileBids,
+  getProfileListings,
+} from "../services/profile";
 import { getName, getToken } from "../utils/storage";
 
 renderHeader();
@@ -25,6 +30,89 @@ function createStat(label: string, value: number): HTMLDivElement {
   box.appendChild(number);
   box.appendChild(text);
   return box;
+}
+
+async function loadMyListings(name: string) {
+  const list = document.querySelector<HTMLUListElement>("#my-listings");
+  const listStatus = document.querySelector<HTMLParagraphElement>(
+    "#my-listings-status",
+  );
+  if (!list || !listStatus) return;
+
+  listStatus.textContent = "Loading listings...";
+  try {
+    const result = await getProfileListings(name);
+    list.replaceChildren();
+
+    if (result.data.length === 0) {
+      listStatus.textContent = "You have no listings yet.";
+      return;
+    }
+
+    for (const listing of result.data) {
+      list.appendChild(createListingCard(listing, "h3"));
+    }
+    listStatus.textContent = "";
+  } catch (error) {
+    listStatus.textContent =
+      error instanceof Error
+        ? `Error: ${error.message}`
+        : "Could not load listings.";
+  }
+}
+
+async function loadMyBids(name: string) {
+  const list = document.querySelector<HTMLUListElement>("#my-bids");
+  const bidsStatus =
+    document.querySelector<HTMLParagraphElement>("#my-bids-status");
+  if (!list || !bidsStatus) return;
+
+  bidsStatus.textContent = "Loading bids...";
+  try {
+    const result = await getProfileBids(name);
+    list.replaceChildren();
+
+    if (result.data.length === 0) {
+      bidsStatus.textContent = "You haven't placed any bids yet.";
+      return;
+    }
+
+    for (const bid of result.data) {
+      const item = document.createElement("li");
+      item.className = "rounded-lg border border-[#D4AF37]/30 p-4";
+
+      let bidTitle: HTMLElement;
+      if (bid.listing) {
+        const link = document.createElement("a");
+        link.href = `/listing.html?id=${bid.listing.id}`;
+        link.textContent = bid.listing.title;
+        link.className =
+          "font-display text-lg hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
+        bidTitle = link;
+      } else {
+        bidTitle = document.createElement("span");
+        bidTitle.textContent = "Listing no longer available";
+        bidTitle.className = "font-display text-lg text-[#A8A296]";
+      }
+
+      const details = document.createElement("p");
+      const when = new Date(bid.created).toLocaleString("en-GB", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
+      details.textContent = `${bid.amount} credits (${when})`;
+      details.className = "mt-1 text-sm text-[#A8A296]";
+
+      item.append(bidTitle, details);
+      list.appendChild(item);
+    }
+    bidsStatus.textContent = "";
+  } catch (error) {
+    bidsStatus.textContent =
+      error instanceof Error
+        ? `Error: ${error.message}`
+        : "Could not load bids.";
+  }
 }
 
 async function loadProfile() {
@@ -92,6 +180,9 @@ async function loadProfile() {
     content.appendChild(stats);
 
     status.textContent = "";
+
+    loadMyListings(name);
+    loadMyBids(name);
   } catch (error) {
     status.textContent =
       error instanceof Error
