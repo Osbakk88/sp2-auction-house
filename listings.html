@@ -15,18 +15,50 @@
   <body class="min-h-screen flex flex-col bg-[#0B0B0C] text-[#F4D18B]">
     <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
     <header id="site-header"></header>
-    <main id="main" class="flex-1 px-6 py-12">
+    <main id="main" class="mx-auto w-full max-w-[1600px] flex-1 px-6 py-12">
       <h1 class="font-display text-3xl text-[#F4D18B]">Listings</h1>
-      <form id="search-form" role="search" class="mt-4 flex max-w-md gap-2">
-        <label for="search-input" class="sr-only">Search listings</label>
-        <input
-          id="search-input"
-          name="q"
-          type="search"
-          placeholder="Search listings"
-          autocomplete="off"
-          class="flex-1 border border-[#D4AF37]/50 bg-transparent px-3 py-2 focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
-        />
+      <form
+        id="search-form"
+        role="search"
+        class="mt-4 flex flex-wrap items-end gap-3"
+      >
+        <div class="flex flex-col gap-1">
+          <label for="search-input" class="text-sm text-[#A8A296]"
+            >Search</label
+          >
+          <input
+            id="search-input"
+            name="q"
+            type="search"
+            placeholder="Search listings"
+            autocomplete="off"
+            class="border border-[#D4AF37]/50 bg-transparent px-3 py-2 focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="tag-input" class="text-sm text-[#A8A296]">Tag</label>
+          <input
+            id="tag-input"
+            name="tag"
+            type="text"
+            autocomplete="off"
+            class="border border-[#D4AF37]/50 bg-transparent px-3 py-2 focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="sort-select" class="text-sm text-[#A8A296]"
+            >Sort by</label
+          >
+          <select
+            id="sort-select"
+            name="sort"
+            class="border border-[#D4AF37]/50 bg-[#0B0B0C] px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
+          >
+            <option value="created:desc">Newest first</option>
+            <option value="endsAt:asc">Ending soonest</option>
+            <option value="title:asc">Title A–Z</option>
+          </select>
+        </div>
         <button
           type="submit"
           class="border border-[#D4AF37] px-4 py-2 focus-visible:outline-2 focus-visible:outline-[#D4AF37]"
@@ -37,7 +69,7 @@
       <p id="listings-status" role="status" class="min-h-6"></p>
       <ul
         id="listings"
-        class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        class="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
       ></ul>
       <nav
         aria-label="Listings pages"

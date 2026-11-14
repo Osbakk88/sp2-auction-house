@@ -13,24 +13,34 @@ const nextButton = document.querySelector<HTMLButtonElement>("#next-page");
 const pageInfo = document.querySelector<HTMLParagraphElement>("#page-info");
 const searchForm = document.querySelector<HTMLFormElement>("#search-form");
 const searchInput = document.querySelector<HTMLInputElement>("#search-input");
+const tagInput = document.querySelector<HTMLInputElement>("#tag-input");
+const sortSelect = document.querySelector<HTMLSelectElement>("#sort-select");
 
 let currentPage = 1;
 let currentQuery = "";
+let currentTag = "";
+let currentSort = "created";
+let currentSortOrder = "desc";
 
 async function loadListings(page: number) {
   if (!status || !list || !prevButton || !nextButton || !pageInfo) return;
   status.textContent = "Loading listings...";
   try {
-    const result = await getListings(page, currentQuery);
+    const result = await getListings(page, currentQuery, {
+      sort: currentSort,
+      sortOrder: currentSortOrder,
+      tag: currentTag,
+    });
     currentPage = result.meta.currentPage;
     list.replaceChildren();
     if (result.data.length === 0) {
       pageInfo.textContent = "";
       prevButton.disabled = true;
       nextButton.disabled = true;
-      status.textContent = currentQuery
-        ? `No listings found for "${currentQuery}".`
-        : "No listings found.";
+      status.textContent =
+        currentQuery || currentTag
+          ? "No listings match your search."
+          : "No listings found.";
       return;
     }
 
@@ -59,7 +69,15 @@ nextButton?.addEventListener("click", () => {
 searchForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   currentQuery = searchInput?.value.trim() ?? "";
+  currentTag = tagInput?.value.trim() ?? "";
+  const [sort, sortOrder] = (sortSelect?.value ?? "created:desc").split(":");
+  currentSort = sort;
+  currentSortOrder = sortOrder;
   loadListings(1);
+});
+
+sortSelect?.addEventListener("change", () => {
+  searchForm?.requestSubmit();
 });
 
 loadListings(1);

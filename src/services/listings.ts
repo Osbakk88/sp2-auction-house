@@ -13,7 +13,12 @@ const BASE_URL = "https://v2.api.noroff.dev/auction/listings";
 export async function getListings(
   page = 1,
   query = "",
-  options: { sort?: string; sortOrder?: string; limit?: number } = {},
+  options: {
+    sort?: string;
+    sortOrder?: string;
+    limit?: number;
+    tag?: string;
+  } = {},
 ): Promise<ListingsResponse> {
   const params = new URLSearchParams({
     limit: String(options.limit ?? 12),
@@ -23,6 +28,7 @@ export async function getListings(
     _active: "true",
   });
   if (query) params.set("q", query);
+  if (options.tag) params.set("_tag", options.tag);
 
   const endpoint = query ? `${BASE_URL}/search` : BASE_URL;
   const response = await fetch(`${endpoint}?${params}`);

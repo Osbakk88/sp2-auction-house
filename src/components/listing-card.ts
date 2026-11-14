@@ -14,7 +14,7 @@ export function createListingCard(
   img.alt = firstImage
     ? firstImage.alt || listing.title
     : `No image for ${listing.title}`;
-  img.className = "h-48 w-full object-cover";
+  img.className = "aspect-[3/2] w-full object-cover";
   img.onerror = () => {
     img.onerror = null;
     img.src = "/placeholder.svg";

@@ -82,7 +82,7 @@ async function loadListing() {
     img.alt = firstImage
       ? firstImage.alt || listing.title
       : `No image for ${listing.title}`;
-    img.className = "h-72 w-full max-w-2xl rounded-lg object-cover";
+    img.className = "aspect-[3/2] w-full max-w-2xl rounded-lg object-cover";
     img.onerror = () => {
       img.onerror = null;
       img.src = "/placeholder.svg";
