@@ -17,6 +17,12 @@ export interface ProfileResponse {
   data: Profile;
 }
 
+export interface UpdateProfileRequest {
+  bio?: string;
+  avatar?: Media;
+  banner?: Media;
+}
+
 export interface ProfileBid {
   id: string;
   amount: number;

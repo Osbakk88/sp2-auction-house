@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&family=Syne:wght@400..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit profile | Atrium Auctionarium</title>
+  </head>
+  <body class="min-h-screen flex flex-col bg-[#0B0B0C] text-[#F4D18B]">
+    <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
+    <header id="site-header"></header>
+    <main
+      id="main"
+      class="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-6 py-12"
+    >
+      <h1 class="font-display text-3xl text-[#F4D18B]">Edit profile</h1>
+      <form id="edit-profile-form" class="mt-6 flex flex-col gap-5" novalidate>
+        <div class="flex flex-col gap-1">
+          <label for="bio" class="text-sm text-[#A8A296]"
+            >Bio (max 160 characters)</label
+          >
+          <textarea
+            id="bio"
+            name="bio"
+            rows="4"
+            maxlength="160"
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]"
+          ></textarea>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="avatar-url" class="text-sm text-[#A8A296]"
+            >Avatar image URL</label
+          >
+          <input
+            id="avatar-url"
+            name="avatar-url"
+            type="url"
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="avatar-alt" class="text-sm text-[#A8A296]"
+            >Avatar description (max 120 characters)</label
+          >
+          <input
+            id="avatar-alt"
+            name="avatar-alt"
+            type="text"
+            maxlength="120"
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="banner-url" class="text-sm text-[#A8A296]"
+            >Banner image URL</label
+          >
+          <input
+            id="banner-url"
+            name="banner-url"
+            type="url"
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="banner-alt" class="text-sm text-[#A8A296]"
+            >Banner description (max 120 characters)</label
+          >
+          <input
+            id="banner-alt"
+            name="banner-alt"
+            type="text"
+            maxlength="120"
+            class="rounded border border-[#A8A296] bg-transparent px-3 py-2 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]"
+          />
+        </div>
+        <p
+          id="form-status"
+          role="alert"
+          class="min-h-6 text-sm text-[#F4D18B]"
+        ></p>
+        <button
+          type="submit"
+          class="rounded bg-[#D4AF37] px-4 py-2 font-semibold text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]"
+        >
+          Save changes
+        </button>
+        <a
+          href="/profile.html"
+          class="rounded border border-[#A8A296] px-4 py-2 text-center text-[#F4D18B] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]"
+          >Cancel</a
+        >
+      </form>
+    </main>
+    <footer id="site-footer"></footer>
+    <script type="module" src="/src/pages/edit-profile.ts"></script>
+  </body>
+</html>
