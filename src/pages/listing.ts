@@ -1,5 +1,6 @@
 import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
+import { createGallery } from "../components/gallery";
 import { deleteListing, getListing, placeBid } from "../services/listings";
 import { getProfile } from "../services/profile";
 import { getName, getToken } from "../utils/storage";
@@ -76,18 +77,6 @@ async function loadListing() {
     const listing = result.data;
     content.replaceChildren();
 
-    const firstImage = listing.media[0];
-    const img = document.createElement("img");
-    img.src = firstImage ? firstImage.url : "/placeholder.svg";
-    img.alt = firstImage
-      ? firstImage.alt || listing.title
-      : `No image for ${listing.title}`;
-    img.className = "aspect-[3/2] w-full max-w-2xl rounded-lg object-cover";
-    img.onerror = () => {
-      img.onerror = null;
-      img.src = "/placeholder.svg";
-    };
-
     const description = document.createElement("p");
     description.textContent = listing.description ?? "No description provided.";
     description.className = "mt-4 max-w-2xl";
@@ -106,7 +95,7 @@ async function loadListing() {
     )}`;
     ends.className = "text-[#A8A296]";
 
-    content.appendChild(img);
+    content.appendChild(createGallery(listing.media, listing.title));
     content.appendChild(description);
     content.appendChild(seller);
     content.appendChild(ends);

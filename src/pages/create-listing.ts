@@ -2,6 +2,7 @@ import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
 import { createListing } from "../services/listings";
 import { getToken } from "../utils/storage";
+import { parseImageUrls } from "../utils/images";
 
 renderHeader();
 renderFooter();
@@ -20,7 +21,7 @@ form?.addEventListener("submit", async (event) => {
   const data = new FormData(form);
   const title = String(data.get("title")).trim();
   const description = String(data.get("description")).trim();
-  const imageUrl = String(data.get("image")).trim();
+  const imagesText = String(data.get("images"));
   const tagsText = String(data.get("tags")).trim();
   const endsAtValue = String(data.get("endsAt"));
 
@@ -48,7 +49,7 @@ form?.addEventListener("submit", async (event) => {
       title,
       description: description || undefined,
       tags,
-      media: imageUrl ? [{ url: imageUrl, alt: title }] : [],
+      media: parseImageUrls(imagesText, title),
       endsAt: endsAt.toISOString(),
     });
     window.location.href = `/listing.html?id=${result.data.id}`;

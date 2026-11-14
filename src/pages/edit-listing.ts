@@ -2,6 +2,7 @@ import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
 import { getListing, updateListing } from "../services/listings";
 import { getName, getToken } from "../utils/storage";
+import { parseImageUrls } from "../utils/images";
 
 renderHeader();
 renderFooter();
@@ -17,7 +18,7 @@ const status = document.querySelector<HTMLParagraphElement>("#form-status");
 const titleInput = document.querySelector<HTMLInputElement>("#title");
 const descriptionInput =
   document.querySelector<HTMLTextAreaElement>("#description");
-const imageInput = document.querySelector<HTMLInputElement>("#image");
+const imageInput = document.querySelector<HTMLTextAreaElement>("#images");
 const tagsInput = document.querySelector<HTMLInputElement>("#tags");
 
 async function loadListing() {
@@ -36,7 +37,7 @@ async function loadListing() {
 
     titleInput.value = listing.title;
     descriptionInput.value = listing.description ?? "";
-    imageInput.value = listing.media[0]?.url ?? "";
+    imageInput.value = listing.media.map((m) => m.url).join("\n");
     tagsInput.value = listing.tags.join(", ");
     status.textContent = "";
   } catch (error) {
@@ -52,7 +53,7 @@ form?.addEventListener("submit", async (event) => {
   const data = new FormData(form);
   const title = String(data.get("title")).trim();
   const description = String(data.get("description")).trim();
-  const imageUrl = String(data.get("image")).trim();
+  const imagesText = String(data.get("images"));
   const tagsText = String(data.get("tags")).trim();
 
   if (!title) {
@@ -73,7 +74,7 @@ form?.addEventListener("submit", async (event) => {
       title,
       description: description || undefined,
       tags,
-      media: imageUrl ? [{ url: imageUrl, alt: title }] : [],
+      media: parseImageUrls(imagesText, title),
     });
     window.location.href = `/listing.html?id=${id}`;
   } catch (error) {
