@@ -1,4 +1,5 @@
 import type { Listing } from "../types/listing";
+import { isEndingSoon } from "../utils/time";
 
 export function createListingCard(
   listing: Listing,
@@ -43,6 +44,13 @@ export function createListingCard(
   ends.className = "px-4 pb-4 text-sm text-[#A8A296]";
 
   li.appendChild(img);
+  if (isEndingSoon(listing.endsAt)) {
+    const badge = document.createElement("span");
+    badge.textContent = "Ending soon";
+    badge.className =
+      "pointer-events-none absolute top-2 left-2 rounded bg-[#D4AF37] px-2 py-1 text-xs font-semibold text-black";
+    li.appendChild(badge);
+  }
   li.appendChild(title);
   li.appendChild(bids);
   li.appendChild(ends);

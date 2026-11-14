@@ -4,6 +4,7 @@ import { createGallery } from "../components/gallery";
 import { deleteListing, getListing, placeBid } from "../services/listings";
 import { getProfile } from "../services/profile";
 import { getName, getToken } from "../utils/storage";
+import { formatTimeLeft } from "../utils/time";
 
 renderHeader();
 renderFooter();
@@ -55,6 +56,8 @@ function confirmDialog(
   });
 }
 
+let timerId: number | undefined;
+
 async function loadListing() {
   if (!status || !titleEl) return;
 
@@ -95,10 +98,25 @@ async function loadListing() {
     )}`;
     ends.className = "text-[#A8A296]";
 
+    clearInterval(timerId);
+    const timeLeft = document.createElement("p");
+    timeLeft.setAttribute("role", "timer");
+    timeLeft.className = "font-semibold text-[#F4D18B]";
+
+    function updateCountdown() {
+      timeLeft.textContent = formatTimeLeft(listing.endsAt);
+    }
+
+    updateCountdown();
+    if (new Date(listing.endsAt).getTime() > Date.now()) {
+      timerId = window.setInterval(updateCountdown, 60000);
+    }
+
     content.appendChild(createGallery(listing.media, listing.title));
     content.appendChild(description);
     content.appendChild(seller);
     content.appendChild(ends);
+    content.appendChild(timeLeft);
 
     const bidsHeading = document.createElement("h2");
     bidsHeading.textContent = "Bid history";
