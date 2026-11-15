@@ -162,7 +162,7 @@ async function loadProfile() {
 
     const bio = document.createElement("p");
     bio.textContent = profile.bio || "No bio yet.";
-    bio.className = "mt-2 text-[#A8A296]";
+    bio.className = "mt-2 max-w-2xl text-[#A8A296]";
 
     const info = document.createElement("div");
     info.className = "mt-4 min-h-16 pl-6 pr-32 md:min-h-20 md:pr-44";
