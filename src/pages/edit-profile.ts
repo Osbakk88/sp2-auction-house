@@ -1,7 +1,7 @@
+// Rewritten by me after understanding the pattern (originally AI-assisted)
 import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
 import { getProfile, updateProfile } from "../services/profile";
-import type { UpdateProfileRequest } from "../types/profile";
 import { getName, getToken } from "../utils/storage";
 
 renderHeader();
@@ -39,7 +39,7 @@ async function loadProfile() {
     status.textContent = "";
   } catch (error) {
     status.textContent =
-      error instanceof Error ? error.message : "Could not load profile.";
+      error instanceof Error ? error.message : "Could not load your profile.";
   }
 }
 
@@ -55,32 +55,27 @@ form?.addEventListener("submit", async (event) => {
   const bannerAlt = String(data.get("banner-alt")).trim();
 
   if (bio.length > 160) {
-    status.textContent = "The bio can be at most 160 characters.";
+    status.textContent = "Maximum bio length is 160 characters.";
     return;
   }
-  if (avatarAlt.length > 120 || bannerAlt.length > 120) {
-    status.textContent = "Image descriptions can be at most 120 characters.";
-    return;
-  }
-
-  const body: UpdateProfileRequest = { bio };
-  if (avatarUrl) body.avatar = { url: avatarUrl, alt: avatarAlt };
-  if (bannerUrl) body.banner = { url: bannerUrl, alt: bannerAlt };
-
-  const button = form.querySelector<HTMLButtonElement>("button[type=submit]");
 
   try {
-    if (button) button.disabled = true;
     status.textContent = "Saving...";
-    await updateProfile(name, body);
-    status.textContent = "Profile updated.";
-    setTimeout(() => {
-      window.location.href = "/profile.html";
-    }, 1000);
+    await updateProfile(name, {
+      bio: bio,
+      avatar: avatarUrl
+        ? { url: avatarUrl, alt: avatarAlt || "Profile avatar" }
+        : undefined,
+      banner: bannerUrl
+        ? { url: bannerUrl, alt: bannerAlt || "Profile banner" }
+        : undefined,
+    });
+    status.textContent = "Your profile was updated successfully.";
   } catch (error) {
     status.textContent =
-      error instanceof Error ? error.message : "Something went wrong.";
-    if (button) button.disabled = false;
+      error instanceof Error
+        ? error.message
+        : "Something went wrong, please try again.";
   }
 });
 

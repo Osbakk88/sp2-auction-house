@@ -1,3 +1,4 @@
+// Rewritten by me, using my other form pages as a model (originally AI-assisted).
 import { renderHeader } from "../components/header";
 import { renderFooter } from "../components/footer";
 import { getListing, updateListing } from "../services/listings";
@@ -13,20 +14,36 @@ if (!getToken()) {
 
 const id = new URLSearchParams(window.location.search).get("id");
 
-const form = document.querySelector<HTMLFormElement>("#create-form");
+if (!id) {
+  window.location.href = "/listings.html";
+}
+
+const form = document.querySelector<HTMLFormElement>("#edit-form");
 const status = document.querySelector<HTMLParagraphElement>("#form-status");
 const titleInput = document.querySelector<HTMLInputElement>("#title");
 const descriptionInput =
   document.querySelector<HTMLTextAreaElement>("#description");
 const imageInput = document.querySelector<HTMLTextAreaElement>("#images");
 const tagsInput = document.querySelector<HTMLInputElement>("#tags");
+const submitButton =
+  document.querySelector<HTMLButtonElement>("#submit-button");
 
 async function loadListing() {
-  if (!id || !status || !titleInput || !descriptionInput) return;
-  if (!imageInput || !tagsInput) return;
+  if (
+    !id ||
+    !status ||
+    !titleInput ||
+    !descriptionInput ||
+    !imageInput ||
+    !tagsInput ||
+    !submitButton
+  ) {
+    return;
+  }
 
   try {
     status.textContent = "Loading listing...";
+
     const result = await getListing(id);
     const listing = result.data;
 
@@ -37,20 +54,34 @@ async function loadListing() {
 
     titleInput.value = listing.title;
     descriptionInput.value = listing.description ?? "";
-    imageInput.value = listing.media.map((m) => m.url).join("\n");
+
+    const imageUrls = listing.media.map((image) => image.url);
+    imageInput.value = imageUrls.join("\n");
+
     tagsInput.value = listing.tags.join(", ");
+
     status.textContent = "";
+    submitButton.disabled = false;
   } catch (error) {
-    status.textContent =
-      error instanceof Error ? error.message : "Could not load listing.";
+    if (error instanceof Error) {
+      status.textContent = error.message;
+    } else {
+      status.textContent = "Could not load your listing.";
+    }
   }
 }
 
+loadListing();
+
 form?.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (!id || !status) return;
+
+  if (!id || !status || !form || !submitButton) {
+    return;
+  }
 
   const data = new FormData(form);
+
   const title = String(data.get("title")).trim();
   const description = String(data.get("description")).trim();
   const imagesText = String(data.get("images"));
@@ -61,26 +92,35 @@ form?.addEventListener("submit", async (event) => {
     return;
   }
 
-  const tags = tagsText
-    ? tagsText
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean)
-    : [];
+  let tags: string[] = [];
+
+  if (tagsText) {
+    const splitTags = tagsText.split(",");
+    const trimmedTags = splitTags.map((tag) => tag.trim());
+    tags = trimmedTags.filter((tag) => tag !== "");
+  }
 
   try {
     status.textContent = "Saving...";
+    submitButton.disabled = true;
+
+    const images = parseImageUrls(imagesText, title);
+
     await updateListing(id, {
-      title,
-      description: description || undefined,
-      tags,
-      media: parseImageUrls(imagesText, title),
+      title: title,
+      description: description,
+      tags: tags,
+      media: images,
     });
+
     window.location.href = `/listing.html?id=${id}`;
   } catch (error) {
-    status.textContent =
-      error instanceof Error ? error.message : "Something went wrong.";
+    if (error instanceof Error) {
+      status.textContent = error.message;
+    } else {
+      status.textContent = "Something went wrong, please try again.";
+    }
+
+    submitButton.disabled = false;
   }
 });
-
-loadListing();

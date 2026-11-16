@@ -12,6 +12,16 @@ renderFooter();
 const status = document.querySelector<HTMLParagraphElement>("#listing-status");
 const titleEl = document.querySelector<HTMLHeadingElement>("#listing-title");
 
+// Format date and time
+function formatDate(date: string): string {
+  return new Date(date).toLocaleString("en-GB", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+}
+
+// AI suggested the structure of this dialog (a Promise that resolves when it closes).
+// I adapted the text and styling, tested it, and can explain how it works.
 function confirmDialog(
   message: string,
   confirmLabel: string,
@@ -20,6 +30,7 @@ function confirmDialog(
     const dialog = document.createElement("dialog");
     dialog.className =
       "m-auto w-[90%] max-w-sm rounded-lg border border-[#D4AF37] bg-[#0B0B0C] p-6 text-[#F4D18B] backdrop:bg-black/70";
+
     dialog.setAttribute("aria-labelledby", "confirm-message");
 
     const text = document.createElement("p");
@@ -44,6 +55,7 @@ function confirmDialog(
 
     cancel.addEventListener("click", () => dialog.close("cancel"));
     confirm.addEventListener("click", () => dialog.close("confirm"));
+
     dialog.addEventListener("close", () => {
       dialog.remove();
       resolve(dialog.returnValue === "confirm");
@@ -51,33 +63,44 @@ function confirmDialog(
 
     actions.append(cancel, confirm);
     dialog.append(text, actions);
+
     document.body.appendChild(dialog);
     dialog.showModal();
   });
 }
 
+// AI suggested the timer setup (setInterval and clearInterval).
+// I wrote formatTimeLeft in time.ts and tested the countdown.
 let timerId: number | undefined;
 
 async function loadListing() {
   if (!status || !titleEl) return;
 
-  const id = new URLSearchParams(window.location.search).get("id");
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
   if (!id) {
     status.textContent = "Error: No listing selected.";
     return;
   }
 
   status.textContent = "Loading listing...";
+
   try {
     const result = await getListing(id);
-    titleEl.textContent = result.data.title;
+    const listing = result.data;
+
+    titleEl.textContent = listing.title;
+
     const content = document.querySelector<HTMLDivElement>("#listing-content");
+
     if (!content) {
       status.textContent = "Error: Listing container not found.";
       return;
     }
-    document.title = `${result.data.title} | Atrium Auctionarium`;
-    const listing = result.data;
+
+    document.title = `${listing.title} | Atrium Auctionarium`;
+
     content.replaceChildren();
 
     const description = document.createElement("p");
@@ -89,16 +112,11 @@ async function loadListing() {
     seller.className = "mt-4 text-[#A8A296]";
 
     const ends = document.createElement("p");
-    ends.textContent = `Ends: ${new Date(listing.endsAt).toLocaleString(
-      "en-GB",
-      {
-        dateStyle: "medium",
-        timeStyle: "short",
-      },
-    )}`;
+    ends.textContent = `Ends: ${formatDate(listing.endsAt)}`;
     ends.className = "text-[#A8A296]";
 
     clearInterval(timerId);
+
     const timeLeft = document.createElement("p");
     timeLeft.setAttribute("role", "timer");
     timeLeft.className = "font-semibold text-[#F4D18B]";
@@ -108,6 +126,7 @@ async function loadListing() {
     }
 
     updateCountdown();
+
     if (new Date(listing.endsAt).getTime() > Date.now()) {
       timerId = window.setInterval(updateCountdown, 60000);
     }
@@ -131,12 +150,11 @@ async function loadListing() {
       bidList.appendChild(empty);
     } else {
       const sortedBids = [...listing.bids].sort((a, b) => b.amount - a.amount);
+
       for (const bid of sortedBids) {
         const item = document.createElement("li");
-        const when = new Date(bid.created).toLocaleString("en-GB", {
-          dateStyle: "medium",
-          timeStyle: "short",
-        });
+        const when = formatDate(bid.created);
+
         item.textContent = `${bid.bidder.name}: ${bid.amount} credits (${when})`;
         bidList.appendChild(item);
       }
@@ -149,7 +167,7 @@ async function loadListing() {
     bidSection.className = "mt-8 max-w-2xl";
 
     const userName = getName();
-    const ended = new Date(listing.endsAt) <= new Date();
+    const ended = new Date(listing.endsAt).getTime() <= Date.now();
 
     if (ended) {
       bidSection.textContent = "This auction has ended.";
@@ -158,10 +176,13 @@ async function loadListing() {
       login.href = "/login.html";
       login.textContent = "Log in to place a bid.";
       login.className = "underline";
+
       bidSection.appendChild(login);
     } else if (listing.seller.name === userName) {
       bidSection.textContent = "You can't bid on your own listing.";
     } else {
+      // AI suggested a starting point for the bid form. I tested it and can explain
+      // each check (higher than the highest bid, enough credits, not my own listing).
       const form = document.createElement("form");
       form.className = "flex flex-col gap-2";
       form.noValidate = true;
@@ -190,29 +211,39 @@ async function loadListing() {
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
+
         const amount = Number(input.value);
         const highest = Math.max(0, ...listing.bids.map((bid) => bid.amount));
 
         if (!Number.isFinite(amount) || amount <= highest) {
-          message.textContent = `Your bid must be higher than ${highest}.`;
+          message.textContent = `Bids must be higher than ${highest}.`;
           return;
         }
 
         try {
           button.disabled = true;
           message.textContent = "Placing bid...";
+
           const profile = await getProfile(userName);
+
           if (profile.data.credits < amount) {
             message.textContent = `You only have ${profile.data.credits} credits.`;
             return;
           }
+
           await placeBid(id, { amount });
+
           await loadListing();
           renderHeader();
-          if (status) status.textContent = "Your bid was placed.";
+
+          if (status) {
+            status.textContent = "Your bid has been placed.";
+          }
         } catch (error) {
           message.textContent =
-            error instanceof Error ? error.message : "Could not place bid.";
+            error instanceof Error
+              ? error.message
+              : "Could not place your bid.";
         } finally {
           button.disabled = false;
         }
@@ -224,6 +255,7 @@ async function loadListing() {
 
     content.appendChild(bidSection);
 
+    // Show edit and delete options for the seller
     if (userName && listing.seller.name === userName) {
       const deleteButton = document.createElement("button");
       deleteButton.type = "button";
@@ -236,14 +268,18 @@ async function loadListing() {
           "Delete this listing? This can't be undone.",
           "Delete",
         );
+
         if (!confirmed) return;
 
         try {
           deleteButton.disabled = true;
+
           await deleteListing(id);
+
           window.location.href = "/listings.html";
         } catch (error) {
           deleteButton.disabled = false;
+
           if (status) {
             status.textContent =
               error instanceof Error
@@ -258,8 +294,8 @@ async function loadListing() {
       editLink.textContent = "Edit listing";
       editLink.className =
         "mt-6 mr-4 inline-block rounded border border-[#D4AF37] px-4 py-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
-      content.appendChild(editLink);
 
+      content.appendChild(editLink);
       content.appendChild(deleteButton);
     }
 

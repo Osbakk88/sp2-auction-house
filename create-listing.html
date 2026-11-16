@@ -2,6 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Create Listing | Atrium Auctionarium</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -9,12 +13,13 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Listing | Atrium Auctionarium</title>
   </head>
+
   <body class="min-h-screen flex flex-col bg-[#0B0B0C] text-[#F4D18B]">
-    <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
+    <a href="#main" class="sr-only focus:not-sr-only"> Skip to content </a>
+
     <header id="site-header"></header>
+
     <main
       id="main"
       class="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center px-6 py-12"
@@ -23,7 +28,8 @@
 
       <form id="create-form" class="mt-6 flex flex-col gap-5" novalidate>
         <div class="flex flex-col gap-1">
-          <label for="title" class="text-sm text-[#A8A296]">Title</label>
+          <label for="title" class="text-sm text-[#A8A296]"> Title </label>
+
           <input
             id="title"
             name="title"
@@ -34,9 +40,10 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <label for="description" class="text-sm text-[#A8A296]"
-            >Description (optional)</label
-          >
+          <label for="description" class="text-sm text-[#A8A296]">
+            Description (optional)
+          </label>
+
           <textarea
             id="description"
             name="description"
@@ -46,9 +53,10 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <label for="images" class="text-sm text-[#A8A296]"
-            >Image URLs (optional, one per line)</label
-          >
+          <label for="images" class="text-sm text-[#A8A296]">
+            Image URLs (optional, one per line)
+          </label>
+
           <textarea
             id="images"
             name="images"
@@ -58,9 +66,10 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <label for="tags" class="text-sm text-[#A8A296]"
-            >Tags (optional, separated by commas)</label
-          >
+          <label for="tags" class="text-sm text-[#A8A296]">
+            Tags (optional, separated by commas)
+          </label>
+
           <input
             id="tags"
             name="tags"
@@ -70,7 +79,8 @@
         </div>
 
         <div class="flex flex-col gap-1">
-          <label for="endsAt" class="text-sm text-[#A8A296]">Ends at</label>
+          <label for="endsAt" class="text-sm text-[#A8A296]"> Ends at </label>
+
           <input
             id="endsAt"
             name="endsAt"
@@ -90,7 +100,9 @@
         </button>
       </form>
     </main>
+
     <footer id="site-footer"></footer>
+
     <script type="module" src="/src/pages/create-listing.ts"></script>
   </body>
 </html>

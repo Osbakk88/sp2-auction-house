@@ -7,24 +7,37 @@ import { getToken } from "../utils/storage";
 renderHeader();
 renderFooter();
 
-if (getToken()) {
-  document.querySelector("#register-link")?.remove();
+// Rewritten by me after understanding the pattern (originally AI-assisted).
+const token = getToken();
+
+if (token) {
+  const registerLink = document.querySelector("#register-link");
+
+  if (registerLink) {
+    registerLink.remove();
+  }
 }
 
 const endingStatus =
   document.querySelector<HTMLParagraphElement>("#ending-status");
+
 const endingList = document.querySelector<HTMLUListElement>("#ending-soon");
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 async function loadEndingSoon() {
-  if (!endingStatus || !endingList) return;
+  if (!endingStatus || !endingList) {
+    return;
+  }
 
   endingStatus.textContent = "Loading listings...";
+
   try {
     const result = await getListings(1, "", {
       sort: "endsAt",
       sortOrder: "asc",
       limit: 3,
     });
+
     endingList.replaceChildren();
 
     if (result.data.length === 0) {
@@ -33,12 +46,17 @@ async function loadEndingSoon() {
     }
 
     for (const listing of result.data) {
-      endingList.appendChild(createListingCard(listing, "h3"));
+      const card = createListingCard(listing, "h3");
+      endingList.appendChild(card);
     }
+
     endingStatus.textContent = "";
   } catch (error) {
-    endingStatus.textContent =
-      error instanceof Error ? error.message : "Could not load listings.";
+    if (error instanceof Error) {
+      endingStatus.textContent = error.message;
+    } else {
+      endingStatus.textContent = "Could not load listings.";
+    }
   }
 }
 

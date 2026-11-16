@@ -29,19 +29,26 @@ function createStat(label: string, value: number): HTMLDivElement {
 
   box.appendChild(number);
   box.appendChild(text);
+
   return box;
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 async function loadMyListings(name: string) {
   const list = document.querySelector<HTMLUListElement>("#my-listings");
   const listStatus = document.querySelector<HTMLParagraphElement>(
     "#my-listings-status",
   );
-  if (!list || !listStatus) return;
+
+  if (!list || !listStatus) {
+    return;
+  }
 
   listStatus.textContent = "Loading listings...";
+
   try {
     const result = await getProfileListings(name);
+
     list.replaceChildren();
 
     if (result.data.length === 0) {
@@ -50,26 +57,35 @@ async function loadMyListings(name: string) {
     }
 
     for (const listing of result.data) {
-      list.appendChild(createListingCard(listing, "h3"));
+      const card = createListingCard(listing, "h3");
+      list.appendChild(card);
     }
+
     listStatus.textContent = "";
   } catch (error) {
-    listStatus.textContent =
-      error instanceof Error
-        ? `Error: ${error.message}`
-        : "Could not load listings.";
+    if (error instanceof Error) {
+      listStatus.textContent = `Error: ${error.message}`;
+    } else {
+      listStatus.textContent = "Could not load listings.";
+    }
   }
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 async function loadMyBids(name: string) {
   const list = document.querySelector<HTMLUListElement>("#my-bids");
   const bidsStatus =
     document.querySelector<HTMLParagraphElement>("#my-bids-status");
-  if (!list || !bidsStatus) return;
+
+  if (!list || !bidsStatus) {
+    return;
+  }
 
   bidsStatus.textContent = "Loading bids...";
+
   try {
     const result = await getProfileBids(name);
+
     list.replaceChildren();
 
     if (result.data.length === 0) {
@@ -82,49 +98,65 @@ async function loadMyBids(name: string) {
       item.className = "rounded-lg border border-[#D4AF37]/30 p-4";
 
       let bidTitle: HTMLElement;
+
       if (bid.listing) {
         const link = document.createElement("a");
         link.href = `/listing.html?id=${bid.listing.id}`;
         link.textContent = bid.listing.title;
         link.className =
           "font-display text-lg hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F4D18B]";
+
         bidTitle = link;
       } else {
-        bidTitle = document.createElement("span");
-        bidTitle.textContent = "Listing no longer available";
-        bidTitle.className = "font-display text-lg text-[#A8A296]";
+        const text = document.createElement("span");
+        text.textContent = "Listing no longer available";
+        text.className = "font-display text-lg text-[#A8A296]";
+
+        bidTitle = text;
       }
 
       const details = document.createElement("p");
-      const when = new Date(bid.created).toLocaleString("en-GB", {
+
+      const date = new Date(bid.created);
+      const formattedDate = date.toLocaleString("en-GB", {
         dateStyle: "medium",
         timeStyle: "short",
       });
-      details.textContent = `${bid.amount} credits (${when})`;
+
+      details.textContent = `${bid.amount} credits (${formattedDate})`;
       details.className = "mt-1 text-sm text-[#A8A296]";
 
-      item.append(bidTitle, details);
+      item.appendChild(bidTitle);
+      item.appendChild(details);
+
       list.appendChild(item);
     }
+
     bidsStatus.textContent = "";
   } catch (error) {
-    bidsStatus.textContent =
-      error instanceof Error
-        ? `Error: ${error.message}`
-        : "Could not load bids.";
+    if (error instanceof Error) {
+      bidsStatus.textContent = `Error: ${error.message}`;
+    } else {
+      bidsStatus.textContent = "Could not load bids.";
+    }
   }
 }
 
 async function loadProfile() {
-  if (!status || !titleEl || !content) return;
+  if (!status || !titleEl || !content) {
+    return;
+  }
 
   const name = getName();
-  if (!getToken() || !name) {
+  const token = getToken();
+
+  if (!token || !name) {
     window.location.href = "/login.html";
     return;
   }
 
   status.textContent = "Loading profile...";
+
   try {
     const result = await getProfile(name);
     const profile = result.data;
@@ -136,6 +168,7 @@ async function loadProfile() {
     banner.alt = profile.banner?.alt || `${profile.name}'s banner`;
     banner.className =
       "h-40 w-full rounded-lg border border-[#D4AF37]/30 object-cover md:h-56";
+
     banner.onerror = () => {
       banner.onerror = null;
       banner.src = "/placeholder.svg";
@@ -146,6 +179,7 @@ async function loadProfile() {
     avatar.alt = profile.avatar?.alt || `${profile.name}'s avatar`;
     avatar.className =
       "absolute -bottom-14 right-6 h-28 w-28 rounded-full border-4 border-[#0B0B0C] object-cover ring-2 ring-[#D4AF37] md:-bottom-[4.5rem] md:h-36 md:w-36";
+
     avatar.onerror = () => {
       avatar.onerror = null;
       avatar.src = "/placeholder.svg";
@@ -153,6 +187,7 @@ async function loadProfile() {
 
     const hero = document.createElement("div");
     hero.className = "relative";
+
     hero.appendChild(banner);
     hero.appendChild(avatar);
 
@@ -166,14 +201,20 @@ async function loadProfile() {
 
     const info = document.createElement("div");
     info.className = "mt-4 min-h-16 pl-6 pr-32 md:min-h-20 md:pr-44";
+
     info.appendChild(displayName);
     info.appendChild(bio);
 
     const stats = document.createElement("div");
     stats.className = "mt-8 grid grid-cols-3 gap-3";
-    stats.appendChild(createStat("Credits", profile.credits));
-    stats.appendChild(createStat("Listings", profile._count.listings));
-    stats.appendChild(createStat("Wins", profile._count.wins));
+
+    const credits = createStat("Credits", profile.credits);
+    const listings = createStat("Listings", profile._count.listings);
+    const wins = createStat("Wins", profile._count.wins);
+
+    stats.appendChild(credits);
+    stats.appendChild(listings);
+    stats.appendChild(wins);
 
     content.appendChild(hero);
     content.appendChild(info);
@@ -184,10 +225,11 @@ async function loadProfile() {
     loadMyListings(name);
     loadMyBids(name);
   } catch (error) {
-    status.textContent =
-      error instanceof Error
-        ? `Error: ${error.message}`
-        : "Could not load profile.";
+    if (error instanceof Error) {
+      status.textContent = `Error: ${error.message}`;
+    } else {
+      status.textContent = "Could not load your profile.";
+    }
   }
 }
 

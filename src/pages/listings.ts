@@ -66,13 +66,18 @@ nextButton?.addEventListener("click", () => {
   loadListings(currentPage + 1);
 });
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 searchForm?.addEventListener("submit", (event) => {
   event.preventDefault();
+
   currentQuery = searchInput?.value.trim() ?? "";
   currentTag = tagInput?.value.trim() ?? "";
-  const [sort, sortOrder] = (sortSelect?.value ?? "created:desc").split(":");
-  currentSort = sort;
-  currentSortOrder = sortOrder;
+
+  // The dropdown value looks like "created:desc", so I split it into sort and order
+  const sortValues = (sortSelect?.value ?? "created:desc").split(":");
+  currentSort = sortValues[0];
+  currentSortOrder = sortValues[1];
+
   loadListings(1);
 });
 
