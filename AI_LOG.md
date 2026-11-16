@@ -49,7 +49,7 @@ This log documents all AI assistance I have sought while working on this assignm
 
 **Tool used:** Claude
 **Date:** 3 November 2026
-**Purpose:** Building the single listing page (listing.html, src/pages/listing.ts, getListing in the service, and the SingleListing/Bid types). Reading ?id= from the URL, showing image, description (handling null), seller, end date and a bid history sorted with the highest bid first. Centerd the layout after.
+**Purpose:** Building the single listing page (listing.html, src/pages/listing.ts, getListing in the service, and the SingleListing/Bid types). Reading ?id= from the URL, showing image, description (handling null), seller, end date and a bid history sorted with the highest bid first. Centered the layout after.
 **Outcome:** Asked claude for guidance and explanation, wrote the code myself. Tested with a listing without bids ("chair") and one with 7 bids, and committed. Can explain how the id is read from the URL and how the bid list is built and sorted.
 
 **Tool used:** Claude
