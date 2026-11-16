@@ -4,20 +4,32 @@ import { getProfile } from "../services/profile";
 export function renderHeader() {
   const header = document.querySelector("#site-header");
 
-  if (!header) return;
+  if (!header) {
+    return;
+  }
 
   const linkClass =
     "hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F4D18B]";
 
   const isLoggedIn = Boolean(getToken());
 
-  const authLinks = isLoggedIn
-    ? `<span id="header-credits" class="text-[#F4D18B]"></span>
-     <a href="/create-listing.html" class="${linkClass}">Create listing</a>
-     <a href="/profile.html" class="${linkClass}">Profile</a>
-     <button id="logout-button" type="button" class="${linkClass}">Log out</button>`
-    : `<a href="/login.html" class="${linkClass}">Log in</a>
-     <a href="/register.html" class="border border-[#D4AF37] px-4 py-1 hover:bg-[#D4AF37] hover:text-black ${linkClass}">Register</a>`;
+  // Rewritten by me after understanding the pattern (originally AI-assisted).
+  // The "Create listing" link was first added with Copilot's help.
+  let authLinks = "";
+
+  if (isLoggedIn) {
+    authLinks = `
+      <span id="header-credits" class="text-[#F4D18B]"></span>
+      <a href="/create-listing.html" class="${linkClass}">Create listing</a>
+      <a href="/profile.html" class="${linkClass}">Profile</a>
+      <button id="logout-button" type="button" class="${linkClass}">Log out</button>
+    `;
+  } else {
+    authLinks = `
+      <a href="/login.html" class="${linkClass}">Log in</a>
+      <a href="/register.html" class="border border-[#D4AF37] px-4 py-1 hover:bg-[#D4AF37] hover:text-black ${linkClass}">Register</a>
+    `;
+  }
 
   header.innerHTML = `
     <div class="relative flex flex-col gap-6 px-6 pt-10 pb-6 border-b border-[#F4D18B] md:gap-10 md:px-24">
@@ -45,17 +57,20 @@ export function renderHeader() {
         aria-label="Main"
         class="hidden flex-col items-start gap-4 font-body text-xl tracking-[0.02em] text-white md:flex md:flex-row md:items-center md:justify-center md:gap-10 md:text-2xl"
       >
-        <a href="/listings.html" class="${linkClass}">Listings</a>${authLinks}
+        <a href="/listings.html" class="${linkClass}">Listings</a>
+        ${authLinks}
       </nav>
     </div>
   `;
 
   const logoutButton = header.querySelector("#logout-button");
 
-  logoutButton?.addEventListener("click", () => {
-    clearAuth();
-    window.location.href = "/index.html";
-  });
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      clearAuth();
+      window.location.href = "/index.html";
+    });
+  }
 
   const creditsEl = header.querySelector<HTMLElement>("#header-credits");
   const userName = getName();
@@ -73,18 +88,28 @@ export function renderHeader() {
   const toggle = header.querySelector<HTMLButtonElement>("#menu-toggle");
   const nav = header.querySelector<HTMLElement>("#main-nav");
 
-  if (!toggle || !nav) return;
-
-  function setOpen(open: boolean) {
-    nav!.classList.toggle("hidden", !open);
-    toggle!.setAttribute("aria-expanded", String(open));
+  if (!toggle || !nav) {
+    return;
   }
 
+  const setOpen = (open: boolean) => {
+    if (open) {
+      nav.classList.remove("hidden");
+    } else {
+      nav.classList.add("hidden");
+    }
+
+    toggle.setAttribute("aria-expanded", String(open));
+  };
+
   toggle.addEventListener("click", () => {
-    setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    const isOpen = toggle.getAttribute("aria-expanded") === "true";
+    setOpen(!isOpen);
   });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setOpen(false);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setOpen(false);
+    }
   });
 }
