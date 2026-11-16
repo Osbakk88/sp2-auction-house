@@ -6,10 +6,12 @@ import type {
   PlaceBidRequest,
   UpdateListingRequest,
 } from "../types/listing";
+
 import { getApiKey, getToken } from "../utils/storage";
 
 const BASE_URL = "https://v2.api.noroff.dev/auction/listings";
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function getListings(
   page = 1,
   query = "",
@@ -20,36 +22,63 @@ export async function getListings(
     tag?: string;
   } = {},
 ): Promise<ListingsResponse> {
-  const params = new URLSearchParams({
-    limit: String(options.limit ?? 12),
-    page: String(page),
-    sort: options.sort ?? "created",
-    sortOrder: options.sortOrder ?? "desc",
-    _active: "true",
-  });
-  if (query) params.set("q", query);
-  if (options.tag) params.set("_tag", options.tag);
+  const params = new URLSearchParams();
 
-  const endpoint = query ? `${BASE_URL}/search` : BASE_URL;
+  params.set("limit", String(options.limit ?? 12));
+  params.set("page", String(page));
+  params.set("sort", options.sort ?? "created");
+  params.set("sortOrder", options.sortOrder ?? "desc");
+  params.set("_active", "true");
+
+  if (query) {
+    params.set("q", query);
+  }
+
+  if (options.tag) {
+    params.set("_tag", options.tag);
+  }
+
+  let endpoint = BASE_URL;
+
+  if (query) {
+    endpoint = `${BASE_URL}/search`;
+  }
+
   const response = await fetch(`${endpoint}?${params}`);
   const result = await response.json();
+
   if (!response.ok) {
-    const message = result.errors?.[0]?.message ?? "An unknown error occurred";
+    let message = "Unknown error occurred";
+
+    if (result.errors && result.errors.length > 0) {
+      message = result.errors[0].message;
+    }
+
     throw new Error(message);
   }
+
   return result;
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function getListing(id: string): Promise<SingleListingResponse> {
   const response = await fetch(`${BASE_URL}/${id}?_seller=true&_bids=true`);
   const result = await response.json();
+
   if (!response.ok) {
-    const message = result.errors?.[0]?.message ?? "An unknown error occurred";
+    let message = "Could not fetch listing";
+
+    if (result.errors && result.errors.length > 0) {
+      message = result.errors[0].message;
+    }
+
     throw new Error(message);
   }
+
   return result;
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function createListing(
   body: CreateListingRequest,
 ): Promise<ListingResponse> {
@@ -57,7 +86,7 @@ export async function createListing(
   const apiKey = getApiKey();
 
   if (!token || !apiKey) {
-    throw new Error("You must be logged in to create a listing.");
+    throw new Error("Please log in to create a listing.");
   }
 
   const response = await fetch(BASE_URL, {
@@ -71,25 +100,33 @@ export async function createListing(
   });
 
   const result = await response.json();
+
   if (!response.ok) {
-    const message = result.errors?.[0]?.message ?? "Could not create listing";
+    let message = "Listing not created";
+
+    if (result.errors && result.errors.length > 0) {
+      message = result.errors[0].message;
+    }
+
     throw new Error(message);
   }
+
   return result;
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function placeBid(
-  id: string,
+  listingId: string,
   body: PlaceBidRequest,
 ): Promise<void> {
   const token = getToken();
   const apiKey = getApiKey();
 
   if (!token || !apiKey) {
-    throw new Error("You must be logged in to place a bid.");
+    throw new Error("Log in to place a bid.");
   }
 
-  const response = await fetch(`${BASE_URL}/${id}/bids`, {
+  const response = await fetch(`${BASE_URL}/${listingId}/bids`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -100,18 +137,25 @@ export async function placeBid(
   });
 
   const result = await response.json();
+
   if (!response.ok) {
-    const message = result.errors?.[0]?.message ?? "Could not place bid";
+    let message = "Could not place your bid";
+
+    if (result.errors && result.errors.length > 0) {
+      message = result.errors[0].message;
+    }
+
     throw new Error(message);
   }
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function deleteListing(id: string): Promise<void> {
   const token = getToken();
   const apiKey = getApiKey();
 
   if (!token || !apiKey) {
-    throw new Error("You must be logged in to delete a listing.");
+    throw new Error("Log in to delete a listing.");
   }
 
   const response = await fetch(`${BASE_URL}/${id}`, {
@@ -123,10 +167,19 @@ export async function deleteListing(id: string): Promise<void> {
   });
 
   if (!response.ok) {
-    throw new Error(`Could not delete listing (${response.status})`);
+    const result = await response.json();
+
+    let message = "Could not delete the listing";
+
+    if (result.errors && result.errors.length > 0) {
+      message = result.errors[0].message;
+    }
+
+    throw new Error(message);
   }
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function updateListing(
   id: string,
   body: UpdateListingRequest,
@@ -135,7 +188,7 @@ export async function updateListing(
   const apiKey = getApiKey();
 
   if (!token || !apiKey) {
-    throw new Error("You must be logged in to edit a listing.");
+    throw new Error("Please log in to update a listing.");
   }
 
   const response = await fetch(`${BASE_URL}/${id}`, {
@@ -149,9 +202,16 @@ export async function updateListing(
   });
 
   const result = await response.json();
+
   if (!response.ok) {
-    const message = result.errors?.[0]?.message ?? "Could not update listing";
+    let message = "Unknown error occurred";
+
+    if (result.errors && result.errors.length > 0) {
+      message = result.errors[0].message;
+    }
+
     throw new Error(message);
   }
+
   return result;
 }

@@ -15,7 +15,7 @@ export async function getProfile(name: string): Promise<ProfileResponse> {
     throw new Error("You must be logged in to view a profile.");
   }
 
-  const response = await fetch(`${BASE_URL}/${encodeURIComponent(name)}`, {
+  const response = await fetch(`${BASE_URL}/${name}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "X-Noroff-API-Key": apiKey,
@@ -29,6 +29,7 @@ export async function getProfile(name: string): Promise<ProfileResponse> {
   return result;
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function updateProfile(
   name: string,
   body: UpdateProfileRequest,
@@ -36,10 +37,9 @@ export async function updateProfile(
   const token = getToken();
   const apiKey = getApiKey();
   if (!token || !apiKey) {
-    throw new Error("You must be logged in to edit your profile.");
+    throw new Error("Log in to edit your profile.");
   }
-
-  const response = await fetch(`${BASE_URL}/${encodeURIComponent(name)}`, {
+  const response = await fetch(`${BASE_URL}/${name}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -50,38 +50,38 @@ export async function updateProfile(
   });
   const result = await response.json();
   if (!response.ok) {
-    const message = result.errors?.[0]?.message ?? "Could not update profile";
+    const message =
+      result.errors?.[0]?.message ?? "Could not update the profile";
     throw new Error(message);
   }
   return result;
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function getProfileListings(
   name: string,
 ): Promise<ListingsResponse> {
   const token = getToken();
   const apiKey = getApiKey();
   if (!token || !apiKey) {
-    throw new Error("You must be logged in to view listings.");
+    throw new Error("Log in to view your profile.");
   }
 
-  const response = await fetch(
-    `${BASE_URL}/${encodeURIComponent(name)}/listings`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "X-Noroff-API-Key": apiKey,
-      },
+  const response = await fetch(`${BASE_URL}/${name}/listings`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-Noroff-API-Key": apiKey,
     },
-  );
+  });
   const result = await response.json();
   if (!response.ok) {
-    const message = result.errors?.[0]?.message ?? "An unknown error occurred";
+    const message = result.errors?.[0]?.message ?? "Unknown error occurred";
     throw new Error(message);
   }
   return result;
 }
 
+// Rewritten by me after understanding the pattern (originally AI-assisted).
 export async function getProfileBids(
   name: string,
 ): Promise<ProfileBidsResponse> {
@@ -91,18 +91,15 @@ export async function getProfileBids(
     throw new Error("You must be logged in to view bids.");
   }
 
-  const response = await fetch(
-    `${BASE_URL}/${encodeURIComponent(name)}/bids?_listings=true`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "X-Noroff-API-Key": apiKey,
-      },
+  const response = await fetch(`${BASE_URL}/${name}/bids?_listings=true`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-Noroff-API-Key": apiKey,
     },
-  );
+  });
   const result = await response.json();
   if (!response.ok) {
-    const message = result.errors?.[0]?.message ?? "An unknown error occurred";
+    const message = result.errors?.[0]?.message ?? "Unknown error occurred";
     throw new Error(message);
   }
   return result;
