@@ -4,7 +4,9 @@ Atrium Auctionarium is an auction website where users can browse listings, place
 
 The project was created for Semester Project 2 at Noroff (JAN24PT) and uses the Noroff Auction API v2.
 
-<img width="3420" height="2214" alt="DAF74D78-63CF-4D54-889B-89A648E010FC" src="https://github.com/user-attachments/assets/39fe6aa5-8bff-4e7b-ad5d-b085ccfdce67" />
+
+<img width="3420" height="1892" alt="DAF74D78-63CF-4D54-889B-89A648E010FC_1_201_a" src="https://github.com/user-attachments/assets/fff24348-324a-403f-ba28-485e4a298695" />
+
 
 
 ## Links
