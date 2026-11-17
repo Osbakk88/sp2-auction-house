@@ -142,6 +142,11 @@ This log documents all AI assistance I have sought while working on this assignm
 **Purpose:** Review the project before committing changes.
 **Outcome:** Claude reviewed the repository with me for TypeScript issues, AI attribution comments, debugging statements, innerHTML, API credentials and page access checks. I also tested most of the functions manually. I noticed that one file had not been saved in VS Code and corrected some attribution comments. I pushed three commits. I still want to improve the hover styling on some buttons.
 
+**Tool used:** Claude
+**Date:** 17 November 2026
+**Purpose:** Get my site live on Netlify and find out why it had no content.
+**Outcome:** I deployed from GitHub to Netlify and the build said it was successful, but the site was missing content. I learned to read the deploy file browser and saw that Netlify had published my source files instead of the built dist folder. I fixed the build command and publish directory in the settings, checked the page source to confirm the built assets were live, and tested the site in a private window. A Netlify AI agent also suggested a netlify.toml file, which I did not use.
+
 **Notes on AI use overall:**
 
 I used Claude and GitHub Copilot / VS Code AI while working on Atrium Auctionarium. I mainly used Claude to understand concepts, plan my work, find mistakes and review code. Near the end of my project Copilot suggested first versions of some features based on my plans. I later rewrote many of the API functions, page scripts and components in a simpler style so I could understand and explain them better. Some parts, including the bid form, confirmation dialog and timer setup, still use AI-suggested code and are labelled in the project. Claude helped draft user stories, an early version of this log and my reflection notes, and I reviewed and organised these for my project. I used AI to help polish the wording of this log and check spelling. I have read and checked each entry. I am responsible for checking, testing and understanding the work I submit.

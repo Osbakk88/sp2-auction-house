@@ -6,7 +6,7 @@ The project was created for Semester Project 2 at Noroff (JAN24PT) and uses the 
 
 ## Links
 
-- Live site: [Add link]
+- Live site: https://atrium-auctionarium.netlify.app/
 - Figma (style guide and prototype): [Add link]
 - GitHub Project board: https://github.com/users/Osbakk88/projects/6/views/1
 
