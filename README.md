@@ -40,8 +40,8 @@ No API key setup is needed. The app creates an API key automatically the first t
 1. Clone the repository:
 
    ```bash
-   git clone [REPOSITORY-URL]
-   cd [PROJECT-FOLDER]
+   git clone (https://github.com/Osbakk88/sp2-auction-house.git)
+   cd sp2-auction-house.
    ```
 
 2. Install dependencies:
