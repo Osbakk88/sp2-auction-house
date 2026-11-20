@@ -94,6 +94,18 @@ I have included several accessibility features:
 - ARIA attributes for the navigation menu and image gallery
 - A timer role for the auction countdown
 
+## Design
+
+The design was made in Figma, with a style guide, desktop and mobile screens, and interactive prototypes.
+- Link desktop: https://www.figma.com/design/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=0-1&t=HidBLKL50Mqqe9sq-1
+- Link mobile: https://www.figma.com/design/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=1-2&t=HidBLKL50Mqqe9sq-1
+- Link components: https://www.figma.com/design/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=68-612&t=HidBLKL50Mqqe9sq-1
+- Link: Style guide
+
+<img width="628" height="924" alt="Figma style 2" src="https://github.com/user-attachments/assets/7785e1e1-52e8-402b-a9ee-dccc3ec57785" /> <img width="194" height="726" alt="Figma mobile" src="https://github.com/user-attachments/assets/4173d6c9-c081-424d-bafb-b55f63ac4ab7" />
+
+
+
 ## AI use
 
 I used Claude and GitHub Copilot during the project for guidance, explanations, debugging and code suggestions.
