@@ -1,4 +1,4 @@
-import { getToken } from "../utils/storage";
+import { clearAuth, getToken } from "../utils/storage";
 
 export function renderFooter() {
   const footer = document.querySelector("#site-footer");
@@ -13,10 +13,14 @@ export function renderFooter() {
   const isLoggedIn = Boolean(getToken());
 
   // Rewritten by me after understanding the pattern (originally AI-assisted).
-  // Log in and Register only show when the user is logged out.
   let authLinks = "";
 
-  if (!isLoggedIn) {
+  if (isLoggedIn) {
+    authLinks = `
+      <a href="/profile.html" class="${linkClass}">Profile</a>
+      <button id="footer-logout-button" type="button" class="${linkClass}">Log out</button>
+    `;
+  } else {
     authLinks = `
       <a href="/login.html" class="${linkClass}">Log in</a>
       <a href="/register.html" class="${linkClass}">Register</a>
@@ -33,4 +37,13 @@ export function renderFooter() {
       <p class="text-sm text-[#A8A296]">© 2026 Atrium Auctionarium</p>
     </div>
   `;
+
+  const logoutButton = footer.querySelector("#footer-logout-button");
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      clearAuth();
+      window.location.href = "/index.html";
+    });
+  }
 }

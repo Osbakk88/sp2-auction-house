@@ -19,9 +19,9 @@ export function renderHeader() {
 
   if (isLoggedIn) {
     authLinks = `
+      <a href="/profile.html" class="${linkClass}">Profile</a>
       <span id="header-credits" class="text-[#F4D18B]"></span>
       <a href="/create-listing.html" class="${linkClass}">Create listing</a>
-      <a href="/profile.html" class="${linkClass}">Profile</a>
       <button id="logout-button" type="button" class="${linkClass}">Log out</button>
     `;
   } else {
@@ -55,7 +55,7 @@ export function renderHeader() {
       <nav
         id="main-nav"
         aria-label="Main"
-        class="hidden flex-col items-start gap-4 font-body text-xl tracking-[0.02em] text-white md:flex md:flex-row md:items-center md:justify-center md:gap-10 md:text-2xl"
+        class="hidden flex-col items-start gap-6 mt-4 font-body text-xl tracking-[0.02em] text-white md:mt-0 md:flex md:flex-row md:items-center md:justify-center md:gap-10 md:text-2xl"
       >
         <a href="/listings.html" class="${linkClass}">Listings</a>
         ${authLinks}
@@ -95,8 +95,10 @@ export function renderHeader() {
   const setOpen = (open: boolean) => {
     if (open) {
       nav.classList.remove("hidden");
+      nav.classList.add("flex");
     } else {
       nav.classList.add("hidden");
+      nav.classList.remove("flex");
     }
 
     toggle.setAttribute("aria-expanded", String(open));
