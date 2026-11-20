@@ -71,6 +71,7 @@ form?.addEventListener("submit", async (event) => {
         : undefined,
     });
     status.textContent = "Your profile was updated successfully.";
+    window.location.href = "/profile.html";
   } catch (error) {
     status.textContent =
       error instanceof Error
