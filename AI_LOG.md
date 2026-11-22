@@ -147,6 +147,36 @@ This log documents all AI assistance I have sought while working on this assignm
 **Purpose:** Get my site live on Netlify and find out why it had no content.
 **Outcome:** I deployed from GitHub to Netlify and the build said it was successful, but the site was missing content. I learned to read the deploy file browser and saw that Netlify had published my source files instead of the built dist folder. I fixed the build command and publish directory in the settings, checked the page source to confirm the built assets were live, and tested the site in a private window. A Netlify AI agent also suggested a netlify.toml file, which I did not use.
 
+**Tool used:** Claude, Figma AI
+**Date:** 17–19 November 2026
+**Purpose:** Get help finding the correct colours, fonts, sizes and spacing from my code so my Figma designs would match the website.
+**Outcome:** Claude helped me find the values I needed from my code, such as font sizes, colours, widths and the header decorations. I created the components, pages and prototype connections in Figma myself after I got tips from Figma AI. I did not know that I could create components from other parts of the design than buttons. I also used Figma AI to make some changes to my desktop designs. I checked the changes afterwards and fixed some things manually. I learned more about auto layout and components. There are still some small differences between Figma and the website because the website uses live data from the API. The header and footer components were re-created several times during this process.
+
+**Tool used:** Claude
+**Date:** 17–19 November 2026
+**Purpose:** Get help planning my reflection and feedback on my writing.
+**Outcome:** Claude suggested how I could organise the reflection and what I should include. I worked on the reflection and got feedback on what I could explain better and what I could shorten. I also used it to make sure I did not forget any important parts.
+
+**Tool used:** Claude
+**Date:** 19–20 November 2026
+**Purpose:** Validate my HTML, run Lighthouse tests and understand the results.
+**Outcome:** I first validated the wrong link by mistake. After that, I validated the HTML files from the dist folder and got no errors on any of the 9 pages. Claude explained the difference between errors, warnings and information messages. I also learned that Netlify adds a script to the live website, which caused an HTML validation error after the closing html tag. My first Lighthouse results were around 76–78 in mobile performance. The page had a high layout shift because the header was added with JavaScript after the page loaded. Claude helped me understand the problem, and I measured the header and footer in DevTools. I added min-h to all 9 HTML pages myself. After deploying the changes, mobile performance improved to 91 and desktop performance to 99. The layout shift was also reduced to 0.
+
+**Tool used:** Claude
+**Date:** 20 November 2026
+**Purpose:** Fix the mobile menu spacing and make the header and footer match my Figma designs.
+**Outcome:** The spacing between the menu links did not work on mobile. Claude explained that the navigation needed display: flex for gap to work. I changed the setOpen function so it adds the flex class when the menu opens. I also changed the order of the links in the header and updated the footer links for logged-in and logged-out users. Claude pointed out that clearAuth was missing from the footer import and that the logout buttons in the header and footer had the same id. I fixed both problems and did a new test.
+
+**Tool used:** Claude
+**Date:** 20 November 2026
+**Purpose:** Get help with some small fixes and clean up the project before testing.
+**Outcome:** I added a redirect to the profile page after saving changes in edit-profile.ts. I also removed the unused public/icons.svg after checking that it was not used anywhere. I checked that my .env file was empty, ignored by Git and had not been committed. When Git rejected my push, I learned how to use git pull --rebase before pushing again.
+
+**Tool used:** Claude
+**Date:** 20 November 2026
+**Purpose:** Get help setting up a testing log for my project.
+**Outcome:** Claude helped create the TESTING.md template using the user stories from the project brief. It also helped me document my W3C validation and Lighthouse results. I am doing the manual testing myself and adding the results to the file. I'm not sure if it's necessary, but I chose to include the file in my project.
+
 **Notes on AI use overall:**
 
-I used Claude and GitHub Copilot / VS Code AI while working on Atrium Auctionarium. I mainly used Claude to understand concepts, plan my work, find mistakes and review code. Near the end of my project Copilot suggested first versions of some features based on my plans. I later rewrote many of the API functions, page scripts and components in a simpler style so I could understand and explain them better. Some parts, including the bid form, confirmation dialog and timer setup, still use AI-suggested code and are labelled in the project. Claude helped draft user stories, an early version of this log and my reflection notes, and I reviewed and organised these for my project. I used AI to help polish the wording of this log and check spelling. I have read and checked each entry. I am responsible for checking, testing and understanding the work I submit.
+I used Claude, GitHub Copilot / VS Code AI and Figma AI while working on Atrium Auctionarium. I mainly used Claude to understand concepts, plan my work, find mistakes and review code. Figma AI helped me with ideas for components. Near the end of my project, Copilot suggested first versions of some features based on my plans. I later rewrote many of the API functions, page scripts and components in a simpler style so I could understand and explain them better. Some parts, including the bid form, confirmation dialog and timer setup, still use AI-suggested code and are labelled in the project. Claude helped draft user stories, an early version of this log and my reflection notes, and I reviewed, rewrote and organised these for my project. I used AI to help polish the wording of this log and check spelling. I have read and checked each entry. I am responsible for checking, testing and understanding the work I submit.
