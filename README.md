@@ -100,7 +100,7 @@ The design was made in Figma, with a style guide, desktop and mobile screens, an
 - Mobile design: https://www.figma.com/design/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=1-2
 - Components: https://www.figma.com/design/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=68-612
 - Desktop prototype: https://www.figma.com/proto/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=125-5214&p=f&viewport=612%2C594%2C0.09&t=vyqUr2OZ8M7FhajG-1&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=125%3A5214
-- Mobile prototype: https://www.figma.com/proto/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=125-5214&p=f&viewport=612%2C594%2C0.09&t=vyqUr2OZ8M7FhajG-1&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=125%3A5214
+- Mobile prototype: https://www.figma.com/proto/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=107-3242&p=f&viewport=-769%2C13%2C0.85&t=0WwVzq7XrXlN1gBf-1&scaling=min-zoom&content-scaling=fixed&page-id=1%3A2&starting-point-node-id=104%3A2939
 - Style guide: https://www.figma.com/design/03E29eRKq124lI11WgEQes/Semesterproject2?node-id=295-2246&t=txp6xeZ1FRe5dxNX-1
 
 ## AI use
