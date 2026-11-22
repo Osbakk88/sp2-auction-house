@@ -3,8 +3,8 @@
 This document shows how I tested my auction website, including HTML validation, Lighthouse results and manual testing of the user stories.
 
 **Live website:** https://atrium-auctionarium.netlify.app/  
-**Testing date:** 19–21 November 2026 (automated tests)  
-**Manual testing date:** 19-21 November
+**Automated testing:** 19–20 November 2026  
+**Manual testing:** 21–22 November 2026  
 **Browser:** Chrome (desktop), Chrome DevTools device mode for mobile
 
 ## 1. Automated testing
@@ -147,6 +147,18 @@ The tests include both logged-in and logged-out users.
 | Header and footer display correctly on desktop | ✅     |                             |
 | Images display correctly or show a fallback    | ✅     |                             |
 | Navigation links lead to the correct pages     | ✅     |                             |
+
+### Keyboard navigation
+
+| Test                                                     | Result | Notes |
+| -------------------------------------------------------- | ------ | ----- |
+| Skip link appears first when pressing Tab                | ✅     |       |
+| All links, buttons and form fields can be reached by Tab | ✅     |       |
+| Focus order is logical (top to bottom)                   | ✅     |       |
+| Focus state is clearly visible                           | ✅     |       |
+| Buttons and links work with Enter / Space                | ✅     |       |
+| Mobile menu opens and closes with the keyboard           | ✅     |       |
+| Confirmation dialog can be used with the keyboard        | ✅     |       |
 
 ## 3. Bugs found and fixed
 
